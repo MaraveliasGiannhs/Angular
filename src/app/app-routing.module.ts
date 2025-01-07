@@ -5,6 +5,7 @@ import { AssetTypeComponent } from './asset-type/asset-type.component';
 import { HttpClient } from '@angular/common/http';
 import { AssetComponent } from './asset/asset/asset.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { BranchComponent } from './branch/branch.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,8 @@ const routes: Routes = [
   { path: 'asset-type', component: AssetTypeComponent },
   { path: 'asset', component: AssetComponent },
   { path: 'employee', component: EmployeeComponent},
+  { path: 'branch', component: BranchComponent},
+
 ];
 
 @NgModule({

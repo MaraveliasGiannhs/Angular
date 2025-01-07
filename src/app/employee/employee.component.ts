@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { EmployeeService } from '../Services/employee.service';
-import { employee } from '../Models/employee';
+import { Employee } from '../Models/employee';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -16,7 +16,7 @@ export class EmployeeComponent {
 
     constructor(private service: EmployeeService, private http: HttpClient){}
 
-    employee: employee[] =[]
+    employee: Employee[] =[]
 
     canCreateNewEmployee: boolean = false
     listHidden: boolean = false
@@ -30,7 +30,7 @@ export class EmployeeComponent {
       this.searchInvalid = false;
 
       this.service.getAll().subscribe(
-            (data: employee[]) => {
+            (data: Employee[]) => {
               this.employee = data;
               this.listHidden = !this.listHidden;
               console.log("All Employees displayed successfully")
@@ -83,11 +83,11 @@ export class EmployeeComponent {
 
     }
 
-    updateEmployee(id: string, employee: employee){
+    updateEmployee(id: string, employee: Employee){
       employee.editing = !employee.editing
     }
 
-    saveEmployee(employee: employee){
+    saveEmployee(employee: Employee){
       this.service.update(employee.id, employee.name, employee.finishedWorkAt).subscribe(
         (response) =>{
         console.log("Asset Type Updated Successfully")
@@ -99,7 +99,7 @@ export class EmployeeComponent {
         employee.editing = false
     }
 
-    cancelUpdateEmployee(employee : employee){
+    cancelUpdateEmployee(employee : Employee){
       employee.editing = false;
     }
 

@@ -10,6 +10,8 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Router,RouterLink } from '@angular/router';
 import { AssetComponent } from './asset/asset/asset.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { BranchComponent } from './branch/branch.component';
+import { SearchComponent } from './search/search.component';
 
 
 
@@ -19,6 +21,8 @@ import { EmployeeComponent } from './employee/employee.component';
     AssetTypeComponent,
     AssetComponent,
     EmployeeComponent,
+    BranchComponent,
+    SearchComponent,
 
   ],
   imports: [

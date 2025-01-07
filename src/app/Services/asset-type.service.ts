@@ -1,5 +1,5 @@
 import { AssetType } from './../Models/asset-type';
-import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -33,7 +33,12 @@ constructor(private http : HttpClient) { }
   delete(id: string): Observable<void>{
     return this.http.delete<void>(`${this.url}/${id}`)
   }
+  
+  search(searchTerm : AssetType): Observable<AssetType[]>{
 
+    
+    return this.http.get<AssetType[]>(`${this.url}/search`)
+  }
 
   // for Content-type / Authorization settings
   //

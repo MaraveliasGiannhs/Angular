@@ -73,8 +73,13 @@ export class AssetComponent implements OnInit{
     )
   }
 
-  searchAssetByName(assetName: string){
-
+  searchAssetById(id: string){
+    if (!id || id.trim().length === 0) {
+      console.error("Invalid ID: ID is empty or contains only spaces.");
+      this.asset = [];
+      this.searchInvalid = true;
+      return; // Exit early if the ID is invalid
+    }
   }
   updateAsset(id: string, asset: Asset){
     asset.editing = !asset.editing

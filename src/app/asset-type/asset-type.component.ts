@@ -21,7 +21,7 @@ export class AssetTypeComponent {
 
 
 
-  constructor( private service :AssetTypeService){}
+  constructor( private service : AssetTypeService){}
 
   assetType : AssetType[] = [];
   listHidden : boolean = false;
@@ -98,6 +98,13 @@ export class AssetTypeComponent {
 
     searchAssetTypeByName(id: string){
 
+      if (!id || id.trim().length === 0) {
+        console.error("Invalid ID: ID is empty or contains only spaces.");
+        this.assetType = [];
+        this.searchInvalid = true;
+        return; // Exit early if the ID is invalid
+      }
+
       this.service.get(id).subscribe(
         (response) =>{
         console.log(`Asset Type with id: ${id} found.`)
@@ -113,6 +120,15 @@ export class AssetTypeComponent {
         console.log(this.searchInvalid)
     }
 
-
+    searchAssetTypeDynamically(searchTerm : string){
+      this.service.search(searchTerm).subscribe(
+        (response) =>{
+          console.log("Search results for Asset Types updated")
+        },
+        (errorContext) =>{
+          console.log("Error occured while searching Asset Type", errorContext)
+        }
+      )
+    }
 
 }
