@@ -1,0 +1,95 @@
+  <!----------------------BACK------------------------>
+<div class="button">
+  <button routerLink='/'> Back </button>
+</div>
+
+
+<div class="button" style="text-align: center;">
+
+
+
+
+
+
+
+
+
+
+  <!---------------------VIEW LIST-------------------->
+  <div>
+    <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Asset Types </button> <br>
+  </div>
+
+
+  <!---------------------CREATE ASSET TYPE-------------------->
+  <div class="button2" >
+    <button style="margin: 5px;" (click)="createNewAssetType()"> Create New </button>
+  </div>
+
+    <div *ngIf="canCreateNewAssetType">
+      <input #assetTypeName placeholder="Name" type="text" style="margin: 5px;">
+      <button (click)="submitNewAssetType(assetTypeName.value)" style="margin: 5px;"> Submit </button>
+    </div>
+
+
+
+  <!------------------------ASSET DETAILS----------------------------->
+    <div class="button" *ngIf="listHidden">
+
+      <!---------------------SEARCH BY ID-------------------->
+      <div>
+
+        <button (click)="searchAssetTypeByName(searchTerm)" type="button" class="search-button" > Search </button>
+        <input type="text" placeholder="Id" class="search-input" [(ngModel)]="searchTerm">
+
+        <br><br>
+      </div>
+
+      <div *ngIf="searchInvalid" style="color: red;">
+        Asset Type not found in the list.
+      </div>
+
+      <ul style="display: inline-block; text-align: left;">
+          <li  *ngFor="let assetType of assetType">
+
+
+
+              <div *ngIf="!assetType.editing">
+                <b>ID:</b> {{assetType.id}} <br>
+                <b>NAME:</b> {{assetType.name}}
+
+                <div>
+                  <button (click)="updateAssetType(assetType.id, assetType)" style="margin: 5px;"> Update </button>
+                  <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
+                </div>
+
+              </div>
+
+
+
+              <div *ngIf="assetType.editing">
+                <b>ID:</b> {{assetType.id}} <br>
+                <b>NAME:</b>
+                <input [(ngModel)]="assetType.name" type="text" />
+
+                <div>
+                  <button (click)="saveAssetType(assetType)" style="margin: 5px;"> Save </button>
+                  <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
+                  <button (click)="cancelUpdateAssetType(assetType)" style="margin: 5px;"> Cancel </button>
+
+
+                </div>
+              </div>
+
+
+              <br><br>
+
+
+
+
+          </li>
+        </ul>
+  </div>
+
+</div>
+

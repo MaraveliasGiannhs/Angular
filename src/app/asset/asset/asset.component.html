@@ -1,0 +1,114 @@
+  <!----------------------BACK------------------------>
+  <div class="button">
+    <button routerLink='/'> Back </button>
+  </div>
+
+
+  <div class="button" style="text-align: center;">
+
+
+
+
+
+
+
+
+
+
+    <!---------------------VIEW LIST-------------------->
+    <div>
+      <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Assets </button> <br>
+    </div>
+
+
+    <!---------------------CREATE ASSET TYPE-------------------->
+    <div class="button2" >
+      <button style="margin: 5px;" (click)="createNewAsset()"> Create New </button>
+    </div>
+
+      <div *ngIf="canCreateNewAsset">
+        <input #assetName placeholder="Name" type="text" style="margin: 5px;"> <br>
+
+        <select #assetTypeId placeholder="Asset Type Id"  style="margin: 5px;">
+          <option *ngFor="let assetType of assetType">
+            {{assetType.id}}
+          </option>
+        </select>
+
+        <br><button (click)="submitNewAsset(assetName.value, assetTypeId.value)" style="margin: 5px;"> Submit </button>
+      </div>
+
+
+
+    <!------------------------ASSET DETAILS----------------------------->
+      <div class="button" *ngIf="listHidden">
+
+        <!---------------------SEARCH BY ID-------------------->
+        <div>
+
+          <button (click)="searchAssetByName(searchTerm)" type="button" class="search-button" > Search </button>
+          <input type="text" placeholder="Id" class="search-input" [(ngModel)]="searchTerm">
+
+          <br><br>
+        </div>
+        <!----------------------------------------------------->
+
+        <div *ngIf="searchInvalid" style="color: red;">
+          Asset Type not found in the list.
+        </div>
+
+        <ul style="display: inline-block; text-align: left;">
+            <li  *ngFor="let asset of asset">
+
+
+
+                <div *ngIf="!asset.editing">
+
+                  <b>ID:</b> {{asset.id}} <br>
+                  <b>NAME:</b> {{asset.name}} <br>
+                  <b> CREATED AT: </b> {{asset.createdAt}} <br>
+                  <b> UPDATED AT: </b>{{asset.updatedAt}} <br>
+                  <b> ASSET TYPE ID: </b> {{asset.assetTypeId}} <br>
+
+
+
+                  <div>
+                    <button (click)="updateAsset(asset.id, asset)" style="margin: 5px;"> Update </button>
+                    <button (click)="deleteAsset(asset.id)" style="margin: 5px;"> Delete </button>
+                  </div>
+
+                </div>
+
+
+
+                <div *ngIf="asset.editing">
+
+                  <b>ID:</b> {{asset.id}} <br>
+                  <b>NAME:</b> <input [(ngModel)]="asset.name" type="text" /> <br>
+                  <b> CREATED AT: </b> {{asset.createdAt}} <br>
+                  <b> UPDATED AT: </b> {{asset.updatedAt}} <br>
+                  <b> ASSET TYPE ID: </b>
+
+                    <select>
+                      <option *ngFor="let assetType of assetType"> <!--???works without [value]-->
+                        {{assetType.id}}
+                      </option>
+                    </select> <br>
+
+                  <div>
+                    <button  style="margin: 5px;" (click)="saveAsset(asset)"> Save </button>
+                    <button  style="margin: 5px;"> Delete </button>
+                    <button  style="margin: 5px;"> Cancel </button>
+                  </div>
+
+                </div>
+                <br><br>
+
+
+
+            </li>
+          </ul>
+    </div>
+
+  </div>
+

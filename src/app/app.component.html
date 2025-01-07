@@ -1,0 +1,16 @@
+<div class="button">
+
+  <h1 style="text-align: center; margin: 20px; font-size: 3rem;"> Welcome </h1>
+
+  <div style="text-align: center;">
+
+    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset-type"> Asset Types </button>
+
+    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset"> Assets </button>
+
+    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/employee"> Employees </button>
+
+  </div>
+  <router-outlet></router-outlet>
+
+</div>
