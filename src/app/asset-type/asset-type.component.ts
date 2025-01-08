@@ -2,10 +2,14 @@ import { AssetType } from './../Models/asset-type';
 import { errorContext } from 'rxjs/internal/util/errorContext';
 import { AssetTypeService } from './../Services/asset-type.service';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { NgTemplateOutlet } from '@angular/common';
+ import { NgTemplateOutlet } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
+
+import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
+import { animate } from '@angular/animations';
+ 
+
 
 @Component({
   selector: 'app-asset-type',
@@ -19,18 +23,23 @@ import { CommonModule } from '@angular/common';
 
 export class AssetTypeComponent {
 
+  constructor( private service : AssetTypeService ){}
+    
+  formModel = new FormGroup({
+    Name: new FormControl('', Validators.required)
+  })
+
+  searchTerm: string = '';
+  assetTypelookup: AssetTypeLookup = {id: undefined, like: ''}
 
 
-  constructor( private service : AssetTypeService){}
 
   assetType : AssetType[] = [];
   listHidden : boolean = false;
   canCreateNewAssetType : boolean = false;
   editing: boolean = false;
-  searchTerm: string = '';  // hold the search value
   searchInvalid: boolean = false;
-
-
+  fid: string = '';
 
   toggleList(){
 
@@ -52,39 +61,44 @@ export class AssetTypeComponent {
   }
 
   submitNewAssetType(name: string){
-    this.service.create(name).subscribe(
-      (response) =>{ // response is returned by the service and then its used
-      console.log("Asset Type Created Successfully")
-      this.assetType.push(response);
+    
+    if(this.formModel.valid){
+      this.service.create(name).subscribe(
+        (response) =>{ // response is returned by the service and then its used
+        console.log("Asset Type Created Successfully")
+        this.assetType.push(response);
 
-      },
-      (errorContext)=>{
-        console.log("Error occured while trying to create a new Asset Type")
-      });
-    }
-
-    deleteAssetType(id:string){
-
-      this.assetType = this.assetType.filter(asset => asset.id !== id); //delete (filtrer out) element from assetType list
-
-      this.service.delete(id).subscribe(
-        (response) =>{
-        console.log("Asset Type Deleted Successfully")
         },
         (errorContext)=>{
-          console.log("Error occured while trying to delete a new Asset Type")
+          console.log("Error occured while trying to create a new Asset Type")
         });
-    }
+      }
+      else 
+        console.log("Form Invalid.")
+  }
 
-    updateAssetType(id: string, asset:AssetType){
-      asset.editing = !asset.editing;
-    }
+  deleteAssetType(id:string){
 
-    cancelUpdateAssetType(asset : AssetType){
-      asset.editing = false;
-    }
+    this.assetType = this.assetType.filter(asset => asset.id !== id); //delete (filtrer out) element from assetType list
 
-    saveAssetType(asset: AssetType){
+    this.service.delete(id).subscribe(
+      (response) =>{
+      console.log("Asset Type Deleted Successfully")
+      },
+      (errorContext)=>{
+        console.log("Error occured while trying to delete a new Asset Type")
+      });
+  }
+
+  updateAssetType(id: string, asset:AssetType){
+    asset.editing = !asset.editing;
+  }
+
+  cancelUpdateAssetType(asset : AssetType){
+    asset.editing = false;
+  }
+
+  saveAssetType(asset: AssetType){
       this.service.update(asset.id, asset.name ).subscribe(
         (response) =>{
         console.log("Asset Type Updated Successfully")
@@ -94,9 +108,9 @@ export class AssetTypeComponent {
         });
 
         asset.editing = false
-    }
+  }
 
-    searchAssetTypeByName(id: string){
+  searchAssetTypeByName(id: string){
 
       if (!id || id.trim().length === 0) {
         console.error("Invalid ID: ID is empty or contains only spaces.");
@@ -118,15 +132,20 @@ export class AssetTypeComponent {
         });
 
         console.log(this.searchInvalid)
-    }
+  }
 
-    searchAssetTypeDynamically(searchTerm : string){
-      this.service.search(searchTerm).subscribe(
-        (response) =>{
-          console.log("Search results for Asset Types updated")
+    searchAssetTypeDynamically(){
+
+      if (!this.assetTypelookup.id || this.assetTypelookup.id.trim() === '')
+        this.assetTypelookup.id = undefined
+
+      this.service.search(this.assetTypelookup).subscribe(
+        (response: AssetType[]) =>{
+          console.log("Search results for Asset Types updated.")
+          this.assetType = response;
         },
         (errorContext) =>{
-          console.log("Error occured while searching Asset Type", errorContext)
+          console.log("Error occured while searching Asset Type.", errorContext)
         }
       )
     }

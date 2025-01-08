@@ -12,6 +12,8 @@ import { AssetComponent } from './asset/asset/asset.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { BranchComponent } from './branch/branch.component';
 import { SearchComponent } from './search/search.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 
 
@@ -26,6 +28,8 @@ import { SearchComponent } from './search/search.component';
 
   ],
   imports: [
+    
+    ReactiveFormsModule,
     RouterLink,
     CommonModule,
     NgTemplateOutlet,
