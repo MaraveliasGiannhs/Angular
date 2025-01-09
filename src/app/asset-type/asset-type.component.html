@@ -27,6 +27,7 @@
 </div>
 
 <div *ngIf="canCreateNewAssetType" >
+  
   <form [formGroup]="formModel">
     
     <input #assetTypeName formControlName="Name" placeholder="Name" type="text" style="margin: 5px;">
@@ -64,29 +65,41 @@
     <li  *ngFor="let assetType of assetType">
 
         <div *ngIf="!assetType.editing">
-          <b>ID:</b> {{assetType.id}} <br>
-          <b>NAME:</b> {{assetType.name}}
+
+          <form [formGroup]="formModel">
+            <b>ID:</b> {{assetType.id}} <br>
+            <b>NAME:</b> {{assetType.name}}
+          </form>
+
           <div>
             <button (click)="updateAssetType(assetType.id, assetType)" style="margin: 5px;"> Update </button>
             <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
           </div>
+
         </div>
-
-
-
+ 
+   <form [formGroup]="formModel">
         <div *ngIf="assetType.editing">
+          
+          
           <b>ID:</b> {{assetType.id}} <br>
           <b>NAME:</b>
-          <input [(ngModel)]="assetType.name" type="text" />
+          <input  type="text" [(ngmodel)]="assetType.name" >
+
+          <div *ngIf="formModel.get('Name')?.touched && formModel.get('Name')?.invalid">
+            <small style="color: red;">Name is required</small>
+          </div>
+
+
 
           <div>
-            <button (click)="saveAssetType(assetType)" style="margin: 5px;"> Save </button>
+            <button [disabled]="formModel.invalid" (click)="saveAssetType(assetType) " style="margin: 5px;"> Save </button>
             <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
             <button (click)="cancelUpdateAssetType(assetType)" style="margin: 5px;"> Cancel </button>
           </div>
         </div>
         <br><br>
-
+    </form>
 
     </li>
   </ul>

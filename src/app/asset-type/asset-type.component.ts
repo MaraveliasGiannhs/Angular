@@ -1,13 +1,8 @@
 import { AssetType } from './../Models/asset-type';
-import { errorContext } from 'rxjs/internal/util/errorContext';
 import { AssetTypeService } from './../Services/asset-type.service';
 import { Component } from '@angular/core';
- import { NgTemplateOutlet } from '@angular/common';
-import { CommonModule } from '@angular/common';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
-
 import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
-import { animate } from '@angular/animations';
  
 
 
@@ -40,6 +35,7 @@ export class AssetTypeComponent {
   editing: boolean = false;
   searchInvalid: boolean = false;
 
+  
   toggleList(){
 
     this.searchInvalid = false;
@@ -106,9 +102,13 @@ export class AssetTypeComponent {
       (errorContext)=>{
         console.log("Error occured while trying to update an Asset Type")
       });
-
+      
+      console.log(this.formModel.controls.Name.value)
         asset.editing = false
-  }
+
+        
+      }
+      
 
   // searchAssetTypeByName(id: string){
 

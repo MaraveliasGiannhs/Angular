@@ -34,6 +34,7 @@ export class AssetService {
   delete(id: string): Observable<void>{
     return this.http.delete<void>(`${this.url}/${id}`)
   }
+  
   search(lookup : AssetLookup): Observable<Asset[]>{
     return this.http.post<Asset[]>(`${this.url}/search`, lookup)
   }
