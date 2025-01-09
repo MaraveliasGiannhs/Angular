@@ -28,7 +28,7 @@ constructor(private http : HttpClient) { }
   }
 
   update(id: string, name: string):Observable<AssetType>{
-    return this.http.post<AssetType>(`${this.url}/${id}`,{id,name}) //{put here model's fields to pass to backend}
+    return this.http.post<AssetType>(this.url,{id,name}) //{put here model's fields to pass to backend}
   }
 
   delete(id: string): Observable<void>{

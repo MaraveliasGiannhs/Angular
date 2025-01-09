@@ -1,0 +1,115 @@
+  <!----------------------BACK------------------------>
+  <div class="button">
+    <button routerLink='/'> Back </button>
+  </div>
+
+
+  <div class="button" style="text-align: center;">
+
+
+
+
+
+
+
+
+
+
+    <!---------------------VIEW LIST-------------------->
+    <div>
+      <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Branches </button> <br>
+    </div>
+
+
+    <!---------------------CREATE BRANCH-------------------->
+    <div class="button2" >
+      <button style="margin: 5px;" (click)="createNewBranch()"> Create New </button>
+    </div>
+
+      <div *ngIf="canCreateNewBranch">
+        <input #branchName placeholder="Name" type="text" style="margin: 5px;"> <br>
+
+        <select #employeeId placeholder="Employee Id"  style="margin: 5px;">
+          <option *ngFor="let employee of employee">
+            Name: {{employee.name}},
+            ID: {{employee.id}}
+          </option>
+        </select>
+
+        <br><button (click)="submitNewBranch(branchName.value, employeeId.value)" style="margin: 5px;"> Submit </button> <!--fix assetTypeid-->
+      </div>
+
+
+
+    <!------------------------BRANCH DETAILS----------------------------->
+      <div class="button" *ngIf="listHidden">
+
+        <!---------------------SEARCH BY ID-------------------->
+        <div>
+
+          <button (click)="searchBranchById(searchTerm)" type="button" class="search-button" > Search </button>
+          <input type="text" placeholder="Id" class="search-input" [(ngModel)]="searchTerm">
+
+          <br><br>
+        </div>
+        <!----------------------------------------------------->
+
+        <div *ngIf="searchInvalid" style="color: red;">
+          Asset Type not found in the list.
+        </div>
+
+        <ul style="display: inline-block; text-align: left;">
+            <li  *ngFor="let branch of branch">
+
+
+
+                <div *ngIf="!branch.editing">
+
+                  <b>ID:</b> {{branch.id}} <br>
+                  <b>NAME:</b> {{branch.name}} <br>
+                  <b> CREATED AT: </b> {{branch.createdAt}} <br>
+                  <b> UPDATED AT: </b>{{branch.updatedAt}} <br>
+                  <!-- <b> ASSET TYPE ID: </b> {{branch.assetTypeId}} <br> -->
+
+
+
+                  <div>
+                    <button (click)="updateBranch(branch.id, branch)" style="margin: 5px;"> Update </button>
+                    <button (click)="deleteBranch(branch.id)" style="margin: 5px;"> Delete </button>
+                  </div>
+
+                </div>
+
+
+
+                <div *ngIf="branch.editing">
+
+                  <b>ID:</b> {{branch.id}} <br>
+                  <b>NAME:</b> <input [(ngModel)]="branch.name" type="text" /> <br>
+                  <b> CREATED AT: </b> {{branch.createdAt}} <br>
+                  <b> UPDATED AT: </b> {{branch.updatedAt}} <br>
+                  <b> ASSET TYPE ID: </b>
+
+                    <!-- <select>
+                      <option *ngFor="let assetType of assetType">  
+                        {{assetType.id}}
+                      </option>
+                    </select> <br> -->
+
+                  <div>
+                    <button  style="margin: 5px;" (click)="saveBranch(branch)"> Save </button>
+                    <button  style="margin: 5px;"> Delete </button>
+                    <button  style="margin: 5px;"> Cancel </button>
+                  </div>
+
+                </div>
+                <br><br>
+
+
+
+            </li>
+          </ul>
+    </div>
+
+  </div>
+

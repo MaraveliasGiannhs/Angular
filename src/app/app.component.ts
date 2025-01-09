@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { AssetType } from './Models/asset-type';
-import { CommonModule } from '@angular/common';
-import { NgComponentOutlet } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
  @Component({

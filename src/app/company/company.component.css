@@ -1,0 +1,31 @@
+.button button {
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-size: larger;
+  }
+  
+  .button2 button{
+    width: 200px;
+    height: 25px;
+    text-align: center;
+    font-size: large;
+    margin: 50px;
+  }
+  
+  div > .search-button {
+    width: 100px;
+    height: 32px;
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 15px;
+  }
+  
+  .search-input {
+    height: 20px;
+    font-size: 20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+  }
+  

@@ -3,6 +3,8 @@ import { Branch } from '../Models/branch';
 import { BranchService } from '../Services/branch.service';
 import { HttpClient } from '@angular/common/http';
 import { errorContext } from 'rxjs/internal/util/errorContext';
+import { Employee } from '../Models/employee';
+import { EmployeeService } from '../Services/employee.service';
 @Component({
   selector: 'app-branch',
   standalone: false,
@@ -13,8 +15,9 @@ import { errorContext } from 'rxjs/internal/util/errorContext';
 export class BranchComponent implements OnInit{
 
 
-  constructor(private service: BranchService, private http: HttpClient){}
+  constructor(private service: BranchService,private employeeService: EmployeeService, private http: HttpClient){}
   
+    employee: Employee[] = []
     branch: Branch[] =[]
   
     canCreateNewBranch: boolean = false
@@ -25,20 +28,19 @@ export class BranchComponent implements OnInit{
   
     ngOnInit(): void {
   
-      // this.assetTypeService.getAll().subscribe(
-      //   (data:AssetType[]) => {
-      //     this.assetType = data;
-      //   },
-      //   (errorContext) => {
-      //     console.log("Error occured while trying to fetch Asset Types", errorContext);
-      //   }
-      // )
+      this.employeeService.getAll().subscribe(
+        (data:Employee[]) => {
+          this.employee = data;
+        },
+        (errorContext) => {
+          console.log("Error occured while trying to fetch Asset Types", errorContext);
+        }
+      )
     }
   
     toggleList(){
-  
+
       this.searchInvalid = false;
-  
       this.service.getAll().subscribe(
         (data: Branch[]) => { //?
           this.branch = data;
@@ -48,6 +50,7 @@ export class BranchComponent implements OnInit{
           console.error("Error occured while trying to display list", errorContext)
         }
       );
+      
     }
   
     createNewBranch( ){

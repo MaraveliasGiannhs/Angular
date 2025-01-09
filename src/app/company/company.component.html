@@ -1,0 +1,117 @@
+  <!----------------------BACK------------------------>
+  <div class="button">
+    <button routerLink='/'> Back </button>
+  </div>
+
+
+  <div class="button" style="text-align: center;">
+
+
+
+
+
+
+
+
+
+
+    <!---------------------VIEW LIST-------------------->
+    <div>
+      <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Companies </button> <br>
+    </div>
+
+
+    <!---------------------CREATE COMPANY-------------------->
+    <div class="button2" >
+      <button style="margin: 5px;" (click)="createCompany()"> Create New </button>
+    </div>
+
+      <div *ngIf="canCreateNewCompany">
+
+        <input #companyName placeholder="Name" type="text" style="margin: 5px;"> <br>
+        <!-- <select #assetTypeId placeholder="Asset Type Id"  style="margin: 5px;">
+          <option *ngFor="let assetType of assetType">
+            Name: {{assetType.name}} 
+            ID: {{assetType.id}}
+          </option>
+        </select> -->
+        <br>
+        <button (click)="submitNewCompany(companyName.value)" style="margin: 5px;"> Submit </button>
+
+      </div>
+
+
+
+    <!------------------------COMPANY DETAILS----------------------------->
+      <div class="button" *ngIf="listHidden">
+
+        <!---------------------SEARCH BY ID-------------------->
+        <div>
+
+          <button (click)="searchCompanyById(searchTerm)" type="button" class="search-button" > Search </button>
+          <input type="text" placeholder="Id" class="search-input" [(ngModel)]="searchTerm">
+
+          <br><br>
+        </div>
+        <!----------------------------------------------------->
+
+        <div *ngIf="searchInvalid" style="color: red;">
+          Company Type not found in the list.
+        </div>
+
+        <ul style="display: inline-block; text-align: left;">
+            <li  *ngFor="let company of company">
+
+
+
+                <div *ngIf="!company.editing">
+
+                  <b>ID:</b> {{company.id}} <br>
+                  <b>NAME:</b> {{company.name}} <br>
+                  <b> CREATED AT: </b> {{company.createdAt}} <br>
+                  <b> UPDATED AT: </b>{{company.updatedAt}} <br>
+
+
+
+                  <div>
+                    <button (click)="updateCompany(company.id, company)" style="margin: 5px;"> Update </button>
+                    <button (click)="deleteCompany(company.id)" style="margin: 5px;"> Delete </button>
+                    <button style="margin: 5px;" *ngIf="router.url === '/company'" type="button" routerLink="/branch"> Branches </button>
+
+                  </div>
+
+                </div>
+
+
+
+                <div *ngIf="company.editing">
+
+                  <b>ID:</b> {{company.id}} <br>
+                  <b>NAME:</b> <input [(ngModel)]="company.name" type="text" /> <br>
+                  <b> CREATED AT: </b> {{company.createdAt}} <br>
+                  <b> UPDATED AT: </b> {{company.updatedAt}} <br>
+<!-- 
+                    <select>
+                      <option *ngFor="let assetType of assetType"> 
+                        {{assetType.id}}
+                      </option>
+                    </select> <br> -->
+
+                  <div>
+                    <button  style="margin: 5px;" (click)="saveCompany(company)"> Save </button>
+                    <button  style="margin: 5px;" (click)="deleteCompany(company.id)"> Delete </button>
+                    <button  style="margin: 5px;" (click)="cancelUpdateCompany(company)"> Cancel </button>
+                  </div>
+
+                </div>
+                <br><br>
+
+
+
+            </li>
+          </ul>
+    </div>
+ 
+  </div>
+  <router-outlet></router-outlet>
+

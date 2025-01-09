@@ -39,7 +39,6 @@ export class AssetTypeComponent {
   canCreateNewAssetType : boolean = false;
   editing: boolean = false;
   searchInvalid: boolean = false;
-  fid: string = '';
 
   toggleList(){
 
@@ -103,7 +102,6 @@ export class AssetTypeComponent {
       this.service.update(asset.id, asset.name ).subscribe(
         (response) =>{
         console.log("Asset Type Updated Successfully")
-        console.log("ID for update is" + asset.id)
       },
       (errorContext)=>{
         console.log("Error occured while trying to update an Asset Type")
@@ -112,29 +110,29 @@ export class AssetTypeComponent {
         asset.editing = false
   }
 
-  searchAssetTypeByName(id: string){
+  // searchAssetTypeByName(id: string){
 
-      if (!id || id.trim().length === 0) {
-        console.error("Invalid ID: ID is empty or contains only spaces.");
-        this.assetType = [];
-        this.searchInvalid = true;
-        return; // Exit early if the ID is invalid
-      }
+  //     if (!id || id.trim().length === 0) {
+  //       console.error("Invalid ID: ID is empty or contains only spaces.");
+  //       this.assetType = [];
+  //       this.searchInvalid = true;
+  //       return; // Exit early if the ID is invalid
+  //     }
 
-      this.service.get(id).subscribe(
-        (response) =>{
-        console.log(`Asset Type with id: ${id} found.`)
-        this.assetType = this.assetType.filter(asset => asset.id === id && asset.id != null); //???
-        this.searchInvalid = false;
-        },
-        (errorContext)=>{
-          this.assetType = []
-          console.log("Error occured while trying to find an Asset Type")
-          this.searchInvalid = true;
-        });
+  //     this.service.get(id).subscribe(
+  //       (response) =>{
+  //       console.log(`Asset Type with id: ${id} found.`)
+  //       this.assetType = this.assetType.filter(asset => asset.id === id && asset.id != null); //???
+  //       this.searchInvalid = false;
+  //       },
+  //       (errorContext)=>{
+  //         this.assetType = []
+  //         console.log("Error occured while trying to find an Asset Type")
+  //         this.searchInvalid = true;
+  //       });
 
-        console.log(this.searchInvalid)
-  }
+  //       console.log(this.searchInvalid)
+  // }
 
   searchAssetTypeDynamically(){
 

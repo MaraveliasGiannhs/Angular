@@ -1,13 +1,14 @@
 import { AssetType } from './../../Models/asset-type';
-import { errorContext } from 'rxjs/internal/util/errorContext';
 import { Component, OnInit } from '@angular/core';
 import { Asset } from '../../Models/asset';
-import { HttpClient } from '@angular/common/http';
 import { AssetService } from '../../Services/asset.service';
 
 import { AssetTypeService } from '../../Services/asset-type.service';
-import { AssetTypeComponent } from './../../asset-type/asset-type.component';
-import { Observable } from 'rxjs';
+import { AssetLookup } from '../../lookup-classes/asset-lookup';
+import { HttpClient } from '@angular/common/http';
+import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-asset',
@@ -18,9 +19,10 @@ import { Observable } from 'rxjs';
 })
 export class AssetComponent implements OnInit{
 
-  constructor(private service: AssetService, private assetTypeService: AssetTypeService, private http: HttpClient){}
+  constructor(private service: AssetService, private assetTypeService: AssetTypeService){}
 
   assetType: AssetType[] =[]
+  assetLookup: AssetLookup = {id: undefined, like: ''}
 
   asset: Asset[] = []
   canCreateNewAsset: boolean = false
@@ -28,6 +30,10 @@ export class AssetComponent implements OnInit{
   searchTerm: string = ''
   searchInvalid: boolean = false
   editing: boolean = false
+
+  formModel = new FormGroup({
+      Name: new FormControl('', Validators.required)
+    })
 
   ngOnInit(): void {
 
@@ -88,10 +94,10 @@ export class AssetComponent implements OnInit{
   saveAsset(asset: Asset){
     this.service.update(asset.id, asset.name, asset.assetTypeId ).subscribe(
       (response) =>{
-      console.log("Asset Type Updated Successfully")
+      console.log("Asset Updated Successfully")
       },
       (errorContext)=>{
-        console.log("Error occured while trying to update an Asset Type", errorContext)
+        console.log("Error occured while trying to update an Asset", errorContext)
       });
 
       asset.editing = false
@@ -113,6 +119,21 @@ export class AssetComponent implements OnInit{
       })
   }
 
+  searchAssetDynamically(){
+
+        if (!this.assetLookup.id || this.assetLookup.id.trim() === '')
+          this.assetLookup.id = undefined
+
+        this.service.search(this.assetLookup).subscribe(
+          (response: Asset[]) =>{
+            console.log("Search results for Asset Types updated.")
+            this.asset = response;
+          },
+          (errorContext) =>{
+            console.log("Error occured while searching Asset Type.", errorContext)
+          }
+        )
+    }
 
 
 }
