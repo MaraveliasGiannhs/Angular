@@ -7,6 +7,7 @@ import { AssetTypeService } from '../../Services/asset-type.service';
 import { AssetLookup } from '../../lookup-classes/asset-lookup';
 import { HttpClient } from '@angular/common/http';
 import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 
 
@@ -60,10 +61,13 @@ export class AssetComponent implements OnInit{
         console.error("Error occured while trying to display list", errorContext)
       }
     );
+
+    this.canCreateNewAsset = false
   }
 
-  createNewAsset( ){
-    this.canCreateNewAsset = true;
+  createNewAsset(){
+    this.canCreateNewAsset = !this.canCreateNewAsset;
+    this.listHidden = false
   }
 
   submitNewAsset(name: string, assetTypeId : string){
@@ -87,12 +91,32 @@ export class AssetComponent implements OnInit{
       return; // Exit early if the ID is invalid
     }
   }
+
   updateAsset(id: string, asset: Asset){
+    
+    asset.editing = !asset.editing
+    this.canCreateNewAsset = false
+    this.service.get(asset.id).subscribe(
+      (data: Asset) =>{
+        this.formModel.setValue({
+          Name: data.name
+        });
+      },
+      (errorContext) =>{
+        console.log("Error occured while trying to fetch Asset for update", errorContext)
+      }
+    )
+
+    this.asset.forEach((a: any) =>{
+      a.editing = false;
+    });
     asset.editing = !asset.editing
   }
 
-  saveAsset(asset: Asset){
-    this.service.update(asset.id, asset.name, asset.assetTypeId ).subscribe(
+  saveAsset(asset: Asset, id: string){
+    const name: string = this.formModel.get('Name')?.value!
+
+    this.service.update(asset.id, name, id ).subscribe(
       (response) =>{
       console.log("Asset Updated Successfully")
       },
@@ -101,9 +125,11 @@ export class AssetComponent implements OnInit{
       });
 
       asset.editing = false
+      this.toggleList();
+      this.toggleList();
   }
 
-  cancelUpdateAssetType(asset : AssetType){
+  cancelUpdateAsset(asset : Asset){
     asset.editing = false;
   }
 

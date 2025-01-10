@@ -1,8 +1,8 @@
 import { AssetType } from './../Models/asset-type';
 import { AssetTypeService } from './../Services/asset-type.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
-import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
+import {FormGroup, FormControl,Validators} from '@angular/forms';
  
 
 
@@ -16,26 +16,31 @@ import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
 
 
 
-export class AssetTypeComponent {
+export class AssetTypeComponent implements OnInit {
 
   constructor( private service : AssetTypeService ){}
     
-  formModel = new FormGroup({
-    Name: new FormControl('', Validators.required)
-  })
+ 
 
   searchTerm: string = '';
   assetTypelookup: AssetTypeLookup = {id: undefined, like: ''}
-
-
-
   assetType : AssetType[] = [];
+
+  formModel = new FormGroup({
+    Name: new FormControl('', Validators.required) 
+  })
+
   listHidden : boolean = false;
   canCreateNewAssetType : boolean = false;
   editing: boolean = false;
   searchInvalid: boolean = false;
 
-  
+  ngOnInit(): void {
+    // this.formModel.patchValue({
+    //   Name: this.assetType
+    // });
+  }
+
   toggleList(){
 
     this.searchInvalid = false;
@@ -66,7 +71,7 @@ export class AssetTypeComponent {
 
         },
         (errorContext)=>{
-          console.log("Error occured while trying to create a new Asset Type")
+          console.log("Error occured while trying to create a new Asset Type",errorContext)
         });
       }
       else 
@@ -78,16 +83,32 @@ export class AssetTypeComponent {
     this.assetType = this.assetType.filter(asset => asset.id !== id); //delete (filtrer out) element from assetType list
 
     this.service.delete(id).subscribe(
-      (response) =>{
+      () =>{
       console.log("Asset Type Deleted Successfully")
       },
       (errorContext)=>{
-        console.log("Error occured while trying to delete a new Asset Type")
+        console.log("Error occured while trying to delete a new Asset Type", errorContext)
       });
   }
 
-  updateAssetType(id: string, asset:AssetType){
-    asset.editing = !asset.editing;
+  updateAssetType(asset:AssetType){
+
+    this.canCreateNewAssetType = false
+      this.service.get(asset.id).subscribe( //fetch asset type to display
+        (data: AssetType) =>{
+          this.formModel.setValue({
+            Name : data.name
+          }); 
+        },
+        (errorContext) =>{
+          console.log("Error occured while trying to fetch Asset Type for update.", errorContext)
+        }
+      )
+
+      this.assetType.forEach((a: any) => { //turn off editing for others
+          a.editing = false;
+      });
+      asset.editing = !asset.editing;
   }
 
   cancelUpdateAssetType(asset : AssetType){
@@ -95,18 +116,18 @@ export class AssetTypeComponent {
   }
 
   saveAssetType(asset: AssetType){
-      this.service.update(asset.id, asset.name ).subscribe(
-        (response) =>{
+    const name: string = this.formModel.get('Name')?.value!
+    
+      this.service.update(asset.id, name ).subscribe(
+        (response: AssetType) =>{
         console.log("Asset Type Updated Successfully")
       },
-      (errorContext)=>{
-        console.log("Error occured while trying to update an Asset Type")
+        (errorContext)=>{
+        console.log("Error occured while trying to update an Asset Type", errorContext)
       });
-      
-      console.log(this.formModel.controls.Name.value)
         asset.editing = false
-
-        
+        this.toggleList();
+        this.toggleList();
       }
       
 
