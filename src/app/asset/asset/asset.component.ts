@@ -32,9 +32,7 @@ export class AssetComponent implements OnInit {
   searchInvalid: boolean = false
   editing: boolean = false
 
-  formModel = new FormGroup({
-    Name: new FormControl('', Validators.required)
-  })
+  formModel: FormGroup/*<any> ?*/ = new FormGroup({})
 
   ngOnInit(): void {
 
@@ -65,14 +63,26 @@ export class AssetComponent implements OnInit {
     this.canCreateNewAsset = false
   }
 
-  createNewAsset() {
-    this.canCreateNewAsset = !this.canCreateNewAsset;
-    this.listHidden = false
+  private buildForm(data: Asset | null){
+    this.formModel = new FormGroup({
+      id: new FormControl(data?.id /*validators?*/),
+      name: new FormControl(data?.name, Validators.required),
+      assetTypeId: new FormControl(data?.assetTypeId, Validators.required)
+    })
   }
 
-  submitNewAsset(name: string, assetTypeId: string) {
+  createNewAsset() {
+    this.buildForm(null)
+    this.canCreateNewAsset = !this.canCreateNewAsset;
+    //this.listHidden = false
+  }
 
-    this.service.create(name, assetTypeId).subscribe(
+  submitNewAsset(data: string) { //here
+
+    const asset: Asset = this.formModel?.value!
+    this.buildForm(asset)
+
+    this.service.update(asset).subscribe(
       (response) => {
         console.log("Asset created successfully.")
         this.asset.push(response);
@@ -116,7 +126,7 @@ export class AssetComponent implements OnInit {
   saveAsset(asset: Asset, id: string) {
     const name: string = this.formModel.get('Name')?.value!
 
-    this.service.update(asset.id, name, id).subscribe(
+    this.service.update(asset).subscribe(
       (response) => {
         console.log("Asset Updated Successfully")
       },

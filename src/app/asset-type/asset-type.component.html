@@ -30,13 +30,13 @@
 
     <form [formGroup]="formModel">
 
-      <input (input)="p()" #assetTypeName formControlName="name" placeholder="name" type="text" style="margin: 5px;">
+      <input (input)="p()" formControlName="name" placeholder="name" type="text" style="margin: 5px;">
 
       <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
         <small style="color: red;">Name is required</small>
       </div>
 
-      <button [disabled]="formModel.invalid" (click)="submitNewAssetType(assetTypeName.value)" style="margin: 5px;"> Submit
+      <button [disabled]="formModel.invalid" (click)="submitNewAssetType()" style="margin: 5px;"> Submit
       </button>
 
     </form>

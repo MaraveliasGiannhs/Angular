@@ -23,12 +23,12 @@ export class AssetService {
     return this.http.get<Asset>(`${this.url}/${id}`)
   }
 
-  create(name: string, assetTypeId:string): Observable<Asset>{
-    return this.http.post<Asset>(this.url, {name, assetTypeId})
-  }
+  // create(name: string, assetTypeId:string): Observable<Asset>{
+  //   return this.http.post<Asset>(this.url, {name, assetTypeId})
+  // }
 
-  update(id: string, name: string, assetTypeId: string):Observable<Asset>{
-    return this.http.post<Asset>(this.url,{id, name, assetTypeId}) //{put here model's fields to pass to backend}
+  update(asset : Asset):Observable<Asset>{
+    return this.http.post<Asset>(this.url,asset) //{put here model's fields to pass to backend}
   }
 
   delete(id: string): Observable<void>{
