@@ -9,33 +9,29 @@ import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
 })
 export class AssetTypeService {
 
-constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
 
   private url = "http://localhost:5178/api/assetTypes" //backend url
 
 
-  getAll(): Observable<AssetType[]>{
+  getAll(): Observable<AssetType[]> {
     return this.http.get<AssetType[]>(this.url)
   }
 
-  get(id: string): Observable<AssetType>{
+  get(id: string): Observable<AssetType> {
     return this.http.get<AssetType>(`${this.url}/${id}`)
   }
 
-  create(name: string): Observable<AssetType>{
-    return this.http.post<AssetType>(this.url, {name})
+  update(asset: AssetType): Observable<AssetType> {
+    return this.http.post<AssetType>(this.url, asset) //{put here model's fields to pass to backend}
   }
 
-  update(id: string, name: string):Observable<AssetType>{
-    return this.http.post<AssetType>(this.url,{id,name}) //{put here model's fields to pass to backend}
-  }
-
-  delete(id: string): Observable<void>{
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`)
   }
-  
-  search(lookup : AssetTypeLookup): Observable<AssetType[]>{
+
+  search(lookup: AssetTypeLookup): Observable<AssetType[]> {
     return this.http.post<AssetType[]>(`${this.url}/search`, lookup)
   }
 

@@ -1,4 +1,4 @@
-  <!----------------------BACK------------------------>
+<!----------------------BACK------------------------>
 <div class="button">
   <button routerLink='/'> Back </button>
 </div>
@@ -15,98 +15,98 @@
 
 
 
-<!---------------------VIEW LIST-------------------->
-<div>
-  <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Asset Types </button> <br>
-</div>
+  <!---------------------VIEW LIST-------------------->
+  <div>
+    <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Asset Types </button> <br>
+  </div>
 
 
-<!---------------------CREATE ASSET TYPE-------------------->
-<div class="button2" >
-  <button style="margin: 5px;" (click)="createNewAssetType()"> Create New </button>
-</div>
+  <!---------------------CREATE ASSET TYPE-------------------->
+  <div class="button2">
+    <button style="margin: 5px;" (click)="createNewAssetType()"> Create New </button>
+  </div>
 
-<div *ngIf="canCreateNewAssetType" >
-  
-  <form [formGroup]="formModel">
-    
-    <input #assetTypeName formControlName="Name" placeholder="Name" type="text" style="margin: 5px;">
+  <div *ngIf="canCreateNewAssetType">
 
-    <div *ngIf="formModel.get('Name')?.touched && formModel.get('Name')?.invalid">
-      <small style="color: red;">Name is required</small>
-    </div>
+    <form [formGroup]="formModel">
 
-    <button (click)="submitNewAssetType(assetTypeName.value)" [disabled]="formModel.invalid" style="margin: 5px;"> Submit </button>
-  
-  </form>
-</div>
+      <input (input)="p()" #assetTypeName formControlName="name" placeholder="name" type="text" style="margin: 5px;">
+
+      <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
+        <small style="color: red;">Name is required</small>
+      </div>
+
+      <button [disabled]="formModel.invalid" (click)="submitNewAssetType(assetTypeName.value)" style="margin: 5px;"> Submit
+      </button>
+
+    </form>
+  </div>
 
 
 
   <!------------------------ASSET DETAILS----------------------------->
-<div class="button" *ngIf="listHidden">
+  <div class="button" *ngIf="listHidden">
 
 
 
 
-  <!---------------------SEARCH BY ID-------------------->
-<div>
-  <br>
-  <input type="text" [(ngModel)]="assetTypelookup.id" placeholder="Search Id " class="search-input" (input)="searchAssetTypeDynamically()"  > <br><br>
-  <input type="text" [(ngModel)]="assetTypelookup.like" placeholder="Search Name" class="search-input" (input)="searchAssetTypeDynamically()"  >
-  <br><br>
-</div>
+    <!---------------------SEARCH BY ID-------------------->
+    <div>
+      <br>
+      <input type="text" [(ngModel)]="assetTypelookup.id" placeholder="Search Id " class="search-input"
+        (input)="searchAssetTypeDynamically()"> <br><br>
+      <input type="text" [(ngModel)]="assetTypelookup.like" placeholder="Search Name" class="search-input"
+        (input)="searchAssetTypeDynamically()">
+      <br><br>
+    </div>
 
-<div *ngIf="searchInvalid" style="color: red;">
-  Asset Type not found in the list.
-</div>
+    <div *ngIf="searchInvalid" style="color: red;">
+      Asset Type not found in the list.
+    </div>
 
-<ul style="display: inline-block; text-align: left;">
-    <li  *ngFor="let assetType of assetType">
+    <ul style="display: inline-block; text-align: left;">
 
-        <div *ngIf="!assetType.editing">
+      <div>
 
-          <form [formGroup]="formModel">
+        <li *ngFor="let assetType of assetType">
+
+          <div *ngIf="formModel == null || assetType.id != formModel.get('id')?.value">
+
             <b>ID:</b> {{assetType.id}} <br>
             <b>NAME:</b> {{assetType.name}}
-          </form>
 
-          <div>
-            <button (click)="updateAssetType(assetType.id, assetType)" style="margin: 5px;"> Update </button>
-            <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
+            <div>
+              <button (click)="updateAssetType(assetType)" style="margin: 5px;"> Update </button>
+              <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
+            </div>
+
           </div>
+          <!------------EDITING------------>
+          <div [formGroup]="formModel" *ngIf="formModel != null && assetType.id == formModel.get('id')?.value">
 
-        </div>
- 
-   <form [formGroup]="formModel">
-        <div *ngIf="assetType.editing">
-          
-          
-          <b>ID:</b> {{assetType.id}} <br>
-          <b>NAME:</b>
-          <input  type="text" [(ngmodel)]="assetType.name" >
+            <b>ID:</b> {{assetType.id}} <br>
+            <b>NAME:</b> <input type="text" formControlName="name">
 
-          <div *ngIf="formModel.get('Name')?.touched && formModel.get('Name')?.invalid">
-            <small style="color: red;">Name is required</small>
+            <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
+              <small style="color: red;">Name is required</small>
+            </div>
+
+            <div>
+              <button [disabled]="formModel.invalid" (click)="saveAssetType() " style="margin: 5px;"> Save </button>
+              <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
+              <button (click)="cancelUpdateAssetType()" style="margin: 5px;"> Cancel </button>
+            </div>
+
           </div>
+          <br><br>
 
+        </li>
+      </div>
 
-
-          <div>
-            <button [disabled]="formModel.invalid" (click)="saveAssetType(assetType) " style="margin: 5px;"> Save </button>
-            <button (click)="deleteAssetType(assetType.id)" style="margin: 5px;"> Delete </button>
-            <button (click)="cancelUpdateAssetType(assetType)" style="margin: 5px;"> Cancel </button>
-          </div>
-        </div>
-        <br><br>
-    </form>
-
-    </li>
-  </ul>
-</div>
+    </ul>
+  </div>
 
 
 
 
 </div>
-

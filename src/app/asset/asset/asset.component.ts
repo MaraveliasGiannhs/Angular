@@ -6,7 +6,8 @@ import { AssetService } from '../../Services/asset.service';
 import { AssetTypeService } from '../../Services/asset-type.service';
 import { AssetLookup } from '../../lookup-classes/asset-lookup';
 import { HttpClient } from '@angular/common/http';
-import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
+import { FormGroup, FormControl, FormsModule, Validators } from '@angular/forms';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 
 
@@ -17,12 +18,12 @@ import {FormGroup, FormControl,FormsModule,Validators} from '@angular/forms';
   templateUrl: './asset.component.html',
   styleUrl: './asset.component.css'
 })
-export class AssetComponent implements OnInit{
+export class AssetComponent implements OnInit {
 
-  constructor(private service: AssetService, private assetTypeService: AssetTypeService){}
+  constructor(private service: AssetService, private assetTypeService: AssetTypeService) { }
 
-  assetType: AssetType[] =[]
-  assetLookup: AssetLookup = {id: undefined, like: ''}
+  assetType: AssetType[] = []
+  assetLookup: AssetLookup = { id: undefined, like: '' }
 
   asset: Asset[] = []
   canCreateNewAsset: boolean = false
@@ -32,13 +33,13 @@ export class AssetComponent implements OnInit{
   editing: boolean = false
 
   formModel = new FormGroup({
-      Name: new FormControl('', Validators.required)
-    })
+    Name: new FormControl('', Validators.required)
+  })
 
   ngOnInit(): void {
 
     this.assetTypeService.getAll().subscribe(
-      (data:AssetType[]) => {
+      (data: AssetType[]) => {
         this.assetType = data;
       },
       (errorContext) => {
@@ -47,7 +48,7 @@ export class AssetComponent implements OnInit{
     )
   }
 
-  toggleList(){
+  toggleList() {
 
     this.searchInvalid = false;
 
@@ -60,26 +61,29 @@ export class AssetComponent implements OnInit{
         console.error("Error occured while trying to display list", errorContext)
       }
     );
+
+    this.canCreateNewAsset = false
   }
 
-  createNewAsset( ){
-    this.canCreateNewAsset = true;
+  createNewAsset() {
+    this.canCreateNewAsset = !this.canCreateNewAsset;
+    this.listHidden = false
   }
 
-  submitNewAsset(name: string, assetTypeId : string){
+  submitNewAsset(name: string, assetTypeId: string) {
 
     this.service.create(name, assetTypeId).subscribe(
-      (response) =>{
+      (response) => {
         console.log("Asset created successfully.")
         this.asset.push(response);
       },
-      (errorContext) =>{
+      (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
       }
     )
   }
 
-  searchAssetById(id: string){
+  searchAssetById(id: string) {
     if (!id || id.trim().length === 0) {
       console.error("Invalid ID: ID is empty or contains only spaces.");
       this.asset = [];
@@ -87,53 +91,75 @@ export class AssetComponent implements OnInit{
       return; // Exit early if the ID is invalid
     }
   }
-  updateAsset(id: string, asset: Asset){
+
+  updateAsset(id: string, asset: Asset) {
+
+    asset.editing = !asset.editing
+    this.canCreateNewAsset = false
+    this.service.get(asset.id).subscribe(
+      (data: Asset) => {
+        this.formModel.setValue({
+          Name: data.name
+        });
+      },
+      (errorContext) => {
+        console.log("Error occured while trying to fetch Asset for update", errorContext)
+      }
+    )
+
+    this.asset.forEach((a: any) => {
+      a.editing = false;
+    });
     asset.editing = !asset.editing
   }
 
-  saveAsset(asset: Asset){
-    this.service.update(asset.id, asset.name, asset.assetTypeId ).subscribe(
-      (response) =>{
-      console.log("Asset Updated Successfully")
+  saveAsset(asset: Asset, id: string) {
+    const name: string = this.formModel.get('Name')?.value!
+
+    this.service.update(asset.id, name, id).subscribe(
+      (response) => {
+        console.log("Asset Updated Successfully")
       },
-      (errorContext)=>{
+      (errorContext) => {
         console.log("Error occured while trying to update an Asset", errorContext)
       });
 
-      asset.editing = false
+    asset.editing = false
+    this.toggleList();
+    this.toggleList();
   }
 
-  cancelUpdateAssetType(asset : AssetType){
+  cancelUpdateAsset(asset: Asset) {
     asset.editing = false;
   }
 
-  deleteAsset(id: string){
+  deleteAsset(id: string) {
     this.asset = this.asset.filter(a => a.id !== id)
 
     this.service.delete(id).subscribe(
-      (Response) =>{
+      (Response) => {
         console.log("Asset deleted successfully")
       },
-      (errorContext) =>{
-        console.log("Error occured while trying to delete Asset" , errorContext)
+      (errorContext) => {
+        console.log("Error occured while trying to delete Asset", errorContext)
       })
   }
 
-  searchAssetDynamically(){
+  searchAssetDynamically() {
 
-        if (!this.assetLookup.id || this.assetLookup.id.trim() === '')
-          this.assetLookup.id = undefined
+    if (!this.assetLookup.id || this.assetLookup.id.trim() === '')
+      this.assetLookup.id = undefined
 
-        this.service.search(this.assetLookup).subscribe(
-          (response: Asset[]) =>{
-            console.log("Search results for Asset Types updated.")
-            this.asset = response;
-          },
-          (errorContext) =>{
-            console.log("Error occured while searching Asset Type.", errorContext)
-          }
-        )
-    }
+    this.service.search(this.assetLookup).subscribe(
+      (response: Asset[]) => {
+        console.log("Search results for Asset Types updated.")
+        this.asset = response;
+      },
+      (errorContext) => {
+        console.log("Error occured while searching Asset Type.", errorContext)
+      }
+    )
+  }
 
 
 }

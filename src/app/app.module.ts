@@ -12,6 +12,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { BranchComponent } from './branch/branch.component';
  import { FormControl,FormsModule,FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CompanyComponent } from './company/company.component';
+import { TestComponent } from './test/test.component';
  
 
 
@@ -24,6 +25,7 @@ import { CompanyComponent } from './company/company.component';
     AssetComponent,
     EmployeeComponent,
     BranchComponent,
+    TestComponent,
 
     
     
