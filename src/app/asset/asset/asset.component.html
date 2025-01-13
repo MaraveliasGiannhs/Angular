@@ -75,7 +75,7 @@
 
       <div [formGroup]="formModel">
 
-        <li *ngFor="let asset of asset">
+        <li [value]="" *ngFor="let asset of asset">
 
           <div *ngIf="!asset.editing">
 
