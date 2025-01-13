@@ -32,7 +32,7 @@ export class AssetComponent implements OnInit {
   searchInvalid: boolean = false
   editing: boolean = false
 
-  formModel: FormGroup/*<any> ?*/ = new FormGroup({})
+  formModel: FormGroup<any>  = new FormGroup({})
 
   ngOnInit(): void {
 
@@ -63,12 +63,17 @@ export class AssetComponent implements OnInit {
     this.canCreateNewAsset = false
   }
 
-  private buildForm(data: Asset | null){
+  private buildForm(data: Asset | null) {
     this.formModel = new FormGroup({
       id: new FormControl(data?.id /*validators?*/),
-      name: new FormControl(data?.name, Validators.required),
+      name: new FormControl(data?.name, Validators.required), //bind value from param object to control value
       assetTypeId: new FormControl(data?.assetTypeId, Validators.required)
     })
+  }
+
+  p() {
+    console.log(this.formModel.valid)
+    console.log(this.formModel.get('name')?.value);  // Accessing the 'name' control value
   }
 
   createNewAsset() {
@@ -77,9 +82,9 @@ export class AssetComponent implements OnInit {
     //this.listHidden = false
   }
 
-  submitNewAsset(data: string) { //here
+  submitNewAsset() {
 
-    const asset: Asset = this.formModel?.value!
+    const asset: Asset = this.formModel?.value! //bind
     this.buildForm(asset)
 
     this.service.update(asset).subscribe(

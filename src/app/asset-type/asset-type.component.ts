@@ -16,7 +16,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 
-            export class AssetTypeComponent implements OnInit {
+            export class AssetTypeComponent  {
 
               constructor(private service: AssetTypeService) { }
 
@@ -33,8 +33,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               editing: boolean = false;
               searchInvalid: boolean = false;
 
-              ngOnInit(): void {
-              }
+              // ngOnInit(): void {
+              // }
 
               toggleList() {
 
@@ -53,7 +53,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
               private buildForm(data: AssetType | null) {
                 this.formModel = new FormGroup({
-                  id: new FormControl(data?.id, /*Validators.required ?? cant create without null id*/),
+                  id: new FormControl(data?.id, /*Validators.required ?? cant create with null id*/),
                   name: new FormControl(data?.name, Validators.required)
                 })
               }

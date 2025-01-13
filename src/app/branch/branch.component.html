@@ -67,8 +67,8 @@
 
                   <b>ID:</b> {{branch.id}} <br>
                   <b>NAME:</b> {{branch.name}} <br>
-                  <b> CREATED AT: </b> {{branch.createdAt}} <br>
-                  <b> UPDATED AT: </b>{{branch.updatedAt}} <br>
+                  <b> CREATED AT: </b> {{branch.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
+                  <b> UPDATED AT: </b>{{branch.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
                   <!-- <b> ASSET TYPE ID: </b> {{branch.assetTypeId}} <br> -->
 
 

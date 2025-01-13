@@ -30,7 +30,7 @@
 
     <form [formGroup]="formModel">
 
-      <input (input)="p()" formControlName="name" placeholder="name" type="text" style="margin: 5px;">
+      <input  formControlName="name" placeholder="name" type="text" style="margin: 5px;">
 
       <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
         <small style="color: red;">Name is required</small>

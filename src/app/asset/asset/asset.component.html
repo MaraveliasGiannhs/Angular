@@ -30,20 +30,22 @@
 
     <form [formGroup]="formModel">
 
-      <input #assetTypeName formControlName="Name" placeholder="Name" type="text" style="margin: 5px;">
+      <input formControlName="name" placeholder="Name" type="text" style="margin: 5px;">
 
-      <select #assetTypeId placeholder="Asset Type Id" style="margin: 5px;">
-        <option *ngFor="let assetType of assetType">
-          {{assetType.id}}
+      <select formControlName="assetTypeId" placeholder="Asset Type Id" style="margin: 5px;">
+       
+        <option [value]="assetType.id" *ngFor="let assetType of assetType">  <!-- match assetType.name with its id  -->
+          {{assetType.name}}
         </option>
+
+        
       </select>
 
-      <div *ngIf="formModel.get('Name')?.touched && formModel.get('Name')?.invalid">
+      <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
         <small style="color: red;">Name is required</small>
       </div>
 
-      <button (click)="submitNewAsset()" [disabled]="formModel.invalid"
-        style="margin: 5px;"> Submit </button>
+      <button [disabled]="formModel.invalid" (click)="submitNewAsset()" style="margin: 5px;"> Submit </button>
 
     </form>
 
@@ -79,8 +81,8 @@
 
             <b>ID:</b> {{asset.id}} <br>
             <b>NAME:</b> {{asset.name}} <br>
-            <b> CREATED AT: </b> {{asset.createdAt}} <br>
-            <b> UPDATED AT: </b>{{asset.updatedAt}} <br>
+            <b> CREATED AT: </b> {{asset.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
+            <b> UPDATED AT: </b>{{asset.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
             <b> ASSET TYPE ID: </b> {{asset.assetTypeId}} <br>
 
             <div>

@@ -59,8 +59,8 @@
                 <div *ngIf="!employee.editing">
                   <b>ID:</b> {{employee.id}} <br>
                   <b>NAME:</b> {{employee.name}} <br>
-                  <b> Started Working At :</b> {{employee.startedWorkAt}} <br>
-                  <b> Finished Working At: </b> {{employee.finishedWorkAt}} <br>
+                  <b> Started Working At :</b> {{employee.startedWorkAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
+                  <b> Finished Working At: </b> {{employee.finishedWorkAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
                   <div>
                     <button (click)="updateEmployee(employee.id, employee)" style="margin: 5px;"> Update </button>
                     <button (click)="deleteEmployee(employee.id)" style="margin: 5px;"> Delete </button>
