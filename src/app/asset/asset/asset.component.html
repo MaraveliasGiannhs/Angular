@@ -4,17 +4,10 @@
 </div>
 
 
+
+
 <div class="button" style="text-align: center;">
-
-
-
-
-
-
-
-
-
-
+  
   <!---------------------VIEW LIST-------------------->
   <div>
     <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Assets </button> <br>
@@ -30,12 +23,14 @@
 
     <form [formGroup]="formModel">
 
-      <input formControlName="name" placeholder="Name" type="text" style="margin: 5px;">
+      <input formControlName="name" (input)="p()" placeholder="Name" type="text" style="margin: 5px;">
 
       <select formControlName="assetTypeId" placeholder="Asset Type Id" style="margin: 5px;">
-       
-        <option [value]="assetType.id" *ngFor="let assetType of assetType">  <!-- match assetType.name with its id  -->
-          {{assetType.name}}
+
+        <option [value]="assetTypeItem.id" *ngFor="let assetTypeItem of assetType" >  <!-- match assetType.name with its id  -->
+          
+          {{assetTypeItem.name}}
+        
         </option>
 
         
@@ -75,7 +70,7 @@
 
       <div [formGroup]="formModel">
 
-        <li [value]="" *ngFor="let asset of asset">
+        <li *ngFor="let asset of asset">
 
           <div *ngIf="!asset.editing">
 
@@ -83,7 +78,7 @@
             <b>NAME:</b> {{asset.name}} <br>
             <b> CREATED AT: </b> {{asset.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
             <b> UPDATED AT: </b>{{asset.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
-            <b> ASSET TYPE ID: </b> {{asset.assetTypeId}} <br>
+            <b> ASSET TYPE Name: </b> {{asset.assetType.name}} <br>
 
             <div>
               <button (click)="updateAsset(asset.id, asset)" style="margin: 5px;"> Update </button>
@@ -91,6 +86,8 @@
             </div>
 
           </div>
+
+
 
           <!------------EDITING------------>
           <div *ngIf="asset.editing">

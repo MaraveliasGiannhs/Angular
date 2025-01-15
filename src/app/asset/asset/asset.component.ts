@@ -49,8 +49,8 @@ export class AssetComponent implements OnInit {
   toggleList() {
 
     this.searchInvalid = false;
-
-    this.service.getAll().subscribe(
+    
+    this.service.search(this.assetLookup).subscribe(
       (data: Asset[]) => {
         this.asset = data;
         this.listHidden = !this.listHidden;
@@ -67,13 +67,14 @@ export class AssetComponent implements OnInit {
     this.formModel = new FormGroup({
       id: new FormControl(data?.id /*validators?*/),
       name: new FormControl(data?.name, Validators.required), //bind value from param object to control value
-      assetTypeId: new FormControl(data?.assetTypeId, Validators.required)
+      assetTypeId: new FormControl(data?.assetType?.id)
     })
   }
 
   p() {
-    console.log(this.formModel.valid)
-    console.log(this.formModel.get('name')?.value);  // Accessing the 'name' control value
+    console.log(this.formModel.value)
+    console.log(this.formModel.get('name')?.value);  
+    console.log(this.formModel.get('assetTypeId')?.value);  
   }
 
   createNewAsset() {
@@ -84,7 +85,14 @@ export class AssetComponent implements OnInit {
 
   submitNewAsset() {
 
-    const asset: Asset = this.formModel?.value! //bind
+    const asset = this.formModel?.value! //bind
+
+    if (asset.assetTypeId){
+      asset.assetType = {
+        id: asset.assetTypeId,
+        name: null,
+      }
+    }
     this.buildForm(asset)
 
     this.service.update(asset).subscribe(
@@ -109,23 +117,23 @@ export class AssetComponent implements OnInit {
 
   updateAsset(id: string, asset: Asset) {
 
-    asset.editing = !asset.editing
-    this.canCreateNewAsset = false
-    this.service.get(asset.id).subscribe(
-      (data: Asset) => {
-        this.formModel.setValue({
-          Name: data.name
-        });
-      },
-      (errorContext) => {
-        console.log("Error occured while trying to fetch Asset for update", errorContext)
-      }
-    )
+    // asset.editing = !asset.editing
+    // this.canCreateNewAsset = false
+    // this.service.get(asset.id).subscribe(
+    //   (data: Asset) => {
+    //     this.formModel.setValue({
+    //       Name: data.name
+    //     });
+    //   },
+    //   (errorContext: any) => {
+    //     console.log("Error occured while trying to fetch Asset for update", errorContext)
+    //   }
+    // )
 
-    this.asset.forEach((a: any) => {
-      a.editing = false;
-    });
-    asset.editing = !asset.editing
+    // this.asset.forEach((a: any) => {
+    //   a.editing = false;
+    // });
+    // asset.editing = !asset.editing
   }
 
   saveAsset(asset: Asset, id: string) {
