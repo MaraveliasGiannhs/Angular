@@ -1,5 +1,5 @@
 import { AssetType } from './../Models/asset-type';
-import { HttpClient, HttpHeaders, HttpClientModule, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';

@@ -1,6 +1,6 @@
 import { Asset } from './../Models/asset';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs'
 import { AssetType } from '../Models/asset-type';
 import { AssetLookup } from '../lookup-classes/asset-lookup';
@@ -15,15 +15,15 @@ export class AssetService {
   private url = "http://localhost:5178/api/assets" //backend url
 
 
-  getAll(): Observable<Asset[]>{
-    return this.http.get<Asset[]>(this.url)
+  // getAll(): Observable<Asset[]>{              //combined with search method in API
+  //   return this.http.get<Asset[]>(this.url)
+  // }
+
+  get(id : string): Observable<Asset[]>{
+    return this.http.get<Asset[]>(this.url) //no need?
   }
 
-  get(id: string): Observable<Asset>{
-    return this.http.get<Asset>(`${this.url}/${id}`)
-  }
-
-  // create(name: string, assetTypeId:string): Observable<Asset>{
+  // create(name: string, assetTypeId:string): Observable<Asset>{  //combined with update(post) method in API
   //   return this.http.post<Asset>(this.url, {name, assetTypeId})
   // }
 
