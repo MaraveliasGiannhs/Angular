@@ -23,22 +23,23 @@
 
     <form [formGroup]="formModel">
 
-      <input formControlName="name" (input)="p()" placeholder="Name" type="text" style="margin: 5px;">
+
+
+      <input formControlName="name" placeholder="Name" type="text" style="margin: 5px;">
 
       <select formControlName="assetTypeId" placeholder="Asset Type Id" style="margin: 5px;">
-
         <option [value]="assetTypeItem.id" *ngFor="let assetTypeItem of assetType" >  <!-- match assetType.name with its id  -->
-          
           {{assetTypeItem.name}}
-        
         </option>
-
-        
       </select>
 
+
+      
       <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
         <small style="color: red;">Name is required</small>
       </div>
+      
+      
 
       <button [disabled]="formModel.invalid" (click)="submitNewAsset()" style="margin: 5px;"> Submit </button>
 
@@ -52,7 +53,7 @@
 
 
 
-    <!---------------------SEARCH BY ID-------------------->
+    <!---------------------SEARCH BY ID/NAME-------------------->
     <div>
       <br>
       <input type="text" [(ngModel)]="assetLookup.id" placeholder="Search Id " class="search-input"
@@ -66,9 +67,13 @@
       Asset Type not found in the list.
     </div>
 
+
+
+    <!--------------------DISPLAY-------------------->
+
     <ul style="display: inline-block; text-align: left;">
 
-      <div [formGroup]="formModel">
+      <div [formGroup]="formModel" >
 
         <li *ngFor="let asset of asset">
 
@@ -78,10 +83,10 @@
             <b>NAME:</b> {{asset.name}} <br>
             <b> CREATED AT: </b> {{asset.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
             <b> UPDATED AT: </b>{{asset.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
-            <b> ASSET TYPE Name: </b> {{asset.assetType.name}} <br>
+            <b> ASSET TYPE: </b> {{asset.assetType.name }} <br>
 
             <div>
-              <button (click)="updateAsset(asset.id, asset)" style="margin: 5px;"> Update </button>
+              <button (click)="updateAsset(asset)" style="margin: 5px;"> Update </button>
               <button (click)="deleteAsset(asset.id)" style="margin: 5px;"> Delete </button>
             </div>
 
@@ -93,22 +98,24 @@
           <div *ngIf="asset.editing">
 
             <b>ID:</b> {{asset.id}} <br>
-            <b>NAME:</b> <input formControlName="Name" type="text" /> <br>
-            <div *ngIf="formModel.get('Name')?.touched && formModel.get('Name')?.invalid">
+            <b>NAME:</b> <input formControlName="name" type="text" /> <br>
+
+            <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
               <small style="color: red;">Name is required</small>
             </div>
-            <b> CREATED AT: </b> {{asset.createdAt}} <br>
-            <b> UPDATED AT: </b> {{asset.updatedAt}} <br>
-            <b> ASSET TYPE ID: </b>
 
-            <select #assetTypeId>
-              <option *ngFor="let assetType of assetType">
-                {{assetType.id}} <!--display assetType.name instead-->
+            <b> CREATED AT: </b> {{asset.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
+            <b> UPDATED AT: </b> {{asset.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
+            <b> ASSET TYPE: </b>
+
+            <select>
+              <option  [value]="assetType.id" *ngFor="let assetType of assetType" >
+                {{assetType.name}} <!--display assetType.name instead-->
               </option>
             </select> <br>
 
             <div>
-              <button [disabled]="formModel.invalid" style="margin: 5px;" (click)="saveAsset(asset, assetTypeId.value)">
+              <button [disabled]="formModel.invalid" style="margin: 5px;" (click)="saveAsset(asset)">
                 Save </button>
               <button style="margin: 5px;" (click)="deleteAsset(asset.id)"> Delete </button>
               <button style="margin: 5px;" (click)="cancelUpdateAsset(asset)"> Cancel </button>

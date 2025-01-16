@@ -90,8 +90,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 this.assetType = this.assetType.filter(asset => asset.id !== id); //delete (filtrer out) element from assetType list
 
                 this.service.delete(id).subscribe(
-                  () => {
-                    console.log("Asset Type Deleted Successfully")
+                  (response) => {
+                    console.log("Asset Type Deleted Successfully", response)
                   },
                   (errorContext) => {
                     console.log("Error occured while trying to delete a new Asset Type", errorContext)

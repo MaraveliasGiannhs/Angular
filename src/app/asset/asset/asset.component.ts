@@ -5,9 +5,9 @@ import { AssetService } from '../../Services/asset.service';
 
 import { AssetTypeService } from '../../Services/asset-type.service';
 import { AssetLookup } from '../../lookup-classes/asset-lookup';
-import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormControl, FormsModule, Validators } from '@angular/forms';
-import { errorContext } from 'rxjs/internal/util/errorContext';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 
@@ -20,10 +20,10 @@ import { errorContext } from 'rxjs/internal/util/errorContext';
 })
 export class AssetComponent implements OnInit {
 
-  constructor(private service: AssetService, private assetTypeService: AssetTypeService) { }
+  constructor(private service: AssetService, private assetTypeService: AssetTypeService,  private cdRef: ChangeDetectorRef) { }
 
   assetType: AssetType[] = []
-  assetLookup: AssetLookup = { id: undefined, like: '' }
+  assetLookup: AssetLookup = { id: undefined, like: ''}
 
   asset: Asset[] = []
   canCreateNewAsset: boolean = false
@@ -44,6 +44,7 @@ export class AssetComponent implements OnInit {
         console.log("Error occured while trying to fetch Asset Types", errorContext);
       }
     )
+
   }
 
   toggleList() {
@@ -63,19 +64,24 @@ export class AssetComponent implements OnInit {
     this.canCreateNewAsset = false
   }
 
+
   private buildForm(data: Asset | null) {
     this.formModel = new FormGroup({
-      id: new FormControl(data?.id /*validators?*/),
+      
+      id: new FormControl(data?.id),
       name: new FormControl(data?.name, Validators.required), //bind value from param object to control value
-      assetTypeId: new FormControl(data?.assetType?.id)
+      assetTypeId: new FormControl(data?.assetType?.id),
+      
     })
   }
 
-  p() {
-    console.log(this.formModel.value)
-    console.log(this.formModel.get('name')?.value);  
-    console.log(this.formModel.get('assetTypeId')?.value);  
-  }
+
+  // p() {
+  //   console.log(this.formModel.value)
+  //   console.log(this.formModel.get('assetTypeId')?.value);  
+  //   console.log(this.formModel.get('assetTypeName')?.value);  
+  // }
+  
 
   createNewAsset() {
     this.buildForm(null)
@@ -85,25 +91,28 @@ export class AssetComponent implements OnInit {
 
   submitNewAsset() {
 
-    const asset = this.formModel?.value! //bind
-
+    const asset = this.formModel?.value! 
     if (asset.assetTypeId){
       asset.assetType = {
         id: asset.assetTypeId,
-        name: null,
-      }
+       }
     }
     this.buildForm(asset)
 
+     
     this.service.update(asset).subscribe(
       (response) => {
         console.log("Asset created successfully.")
         this.asset.push(response);
+        
+        //this.toggleList(); // ?
+        //this.toggleList(); 
       },
       (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
       }
     )
+
   }
 
   searchAssetById(id: string) {
@@ -115,29 +124,31 @@ export class AssetComponent implements OnInit {
     }
   }
 
-  updateAsset(id: string, asset: Asset) {
+  updateAsset(asset: Asset) {
 
-    // asset.editing = !asset.editing
-    // this.canCreateNewAsset = false
-    // this.service.get(asset.id).subscribe(
-    //   (data: Asset) => {
-    //     this.formModel.setValue({
-    //       Name: data.name
-    //     });
-    //   },
-    //   (errorContext: any) => {
-    //     console.log("Error occured while trying to fetch Asset for update", errorContext)
-    //   }
-    // )
+    asset.editing = !asset.editing
+    this.canCreateNewAsset = false
 
-    // this.asset.forEach((a: any) => {
-    //   a.editing = false;
-    // });
-    // asset.editing = !asset.editing
+    this.buildForm(asset)
+
+    this.service.get(asset.id).subscribe(
+      (data: Asset[]) => {
+        console.log("Updating Asset ...", data)
+        this.buildForm(asset)
+      },
+      (errorContext: any) => {
+        console.log("Error occured while trying to fetch Asset for update", errorContext)
+      }
+    )
+
+    this.asset.forEach((a: any) => {
+      a.editing = false;
+    });
+    asset.editing = !asset.editing
   }
 
-  saveAsset(asset: Asset, id: string) {
-    const name: string = this.formModel.get('Name')?.value!
+  saveAsset(asset: Asset) {  //h
+    const name: string = this.formModel.get('name')?.value!
 
     this.service.update(asset).subscribe(
       (response) => {

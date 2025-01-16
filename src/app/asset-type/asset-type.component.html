@@ -64,6 +64,8 @@
       Asset Type not found in the list.
     </div>
 
+
+    <!--------------------DISPLAY-------------------->
     <ul style="display: inline-block; text-align: left;">
 
       <div>
@@ -81,6 +83,9 @@
             </div>
 
           </div>
+
+
+          
           <!------------EDITING------------>
           <div [formGroup]="formModel" *ngIf="formModel != null && assetType.id == formModel.get('id')?.value">
 

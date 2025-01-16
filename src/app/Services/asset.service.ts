@@ -20,7 +20,7 @@ export class AssetService {
   // }
 
   get(id : string): Observable<Asset[]>{
-    return this.http.get<Asset[]>(this.url) //no need?
+    return this.http.get<Asset[]>(`${this.url}/${id}`) 
   }
 
   // create(name: string, assetTypeId:string): Observable<Asset>{  //combined with update(post) method in API
