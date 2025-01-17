@@ -1,6 +1,6 @@
 import { AssetType } from './../Models/asset-type';
 import { AssetTypeService } from './../Services/asset-type.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -19,9 +19,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
             export class AssetTypeComponent  {
 
               constructor(private service: AssetTypeService) { }
-
-
-
               searchTerm: string = '';
               assetTypelookup: AssetTypeLookup = { id: undefined, like: '' }
               assetType: AssetType[] = [];
@@ -33,13 +30,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               editing: boolean = false;
               searchInvalid: boolean = false;
 
-              // ngOnInit(): void {
-              // }
+     
 
               toggleList() {
-
                 this.searchInvalid = false;
-
                 this.service.getAll().subscribe(
                   (data: AssetType[]) => {
                     this.assetType = data;
@@ -51,6 +45,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 );
               }
 
+
+
               private buildForm(data: AssetType | null) {
                 this.formModel = new FormGroup({
                   id: new FormControl(data?.id, /*Validators.required ?? cant create with null id*/),
@@ -58,10 +54,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 })
               }
 
+
+
               createNewAssetType() {
                 this.buildForm(null);
                 this.canCreateNewAssetType = !this.canCreateNewAssetType
               }
+
+
 
               submitNewAssetType() {
 
@@ -79,14 +79,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               }
 
 
-              p() {
-                console.log(this.formModel.valid)
-                console.log(this.formModel.get('name')?.value);  // Accessing the 'name' control value
-              }
-
 
               deleteAssetType(id: string) {
-
                 this.assetType = this.assetType.filter(asset => asset.id !== id); //delete (filtrer out) element from assetType list
 
                 this.service.delete(id).subscribe(
@@ -98,8 +92,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                   });
               }
 
-              updateAssetType(asset: AssetType) {
 
+
+              updateAssetType(asset: AssetType) {
                 this.canCreateNewAssetType = false
                 this.service.get(asset.id).subscribe( //fetch asset type to display
                   (data: AssetType) => {
@@ -111,13 +106,16 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 )
               }
 
+
+
               cancelUpdateAssetType() {
                 this.buildForm(null);
               }
 
+
+
               saveAssetType() {
                 const asset: AssetType = this.formModel?.value!
-
                 this.service.update(asset).subscribe(
                   (response: AssetType) => {
                     console.log("Asset Type Updated Successfully")
@@ -125,15 +123,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                   (errorContext) => {
                     console.log("Error occured while trying to update an Asset Type", errorContext)
                   });
-
                 this.buildForm(null);
                 this.toggleList();
                 this.toggleList();
               }
 
 
-              searchAssetTypeDynamically() {
 
+              searchAssetTypeDynamically() {
                 if (!this.assetTypelookup.id || this.assetTypelookup.id.trim() === '')
                   this.assetTypelookup.id = undefined
 

@@ -27,8 +27,8 @@ export class AssetService {
   //   return this.http.post<Asset>(this.url, {name, assetTypeId})
   // }
 
-  update(asset : Asset):Observable<Asset>{
-    return this.http.post<Asset>(this.url,asset) //{put here model's fields to pass to backend}
+  update(asset : Asset):Observable<Asset[]>{
+    return this.http.post<Asset[]>(this.url,asset) //{put here model's fields to pass to backend}
   }
 
   delete(id: string): Observable<void>{

@@ -35,20 +35,18 @@ export class AssetComponent implements OnInit {
   formModel: FormGroup<any>  = new FormGroup({})
 
   ngOnInit(): void {
-
     this.assetTypeService.getAll().subscribe(
       (data: AssetType[]) => {
         this.assetType = data;
       },
       (errorContext) => {
         console.log("Error occured while trying to fetch Asset Types", errorContext);
-      }
-    )
-
+      })
   }
 
-  toggleList() {
 
+
+  toggleList() {    
     this.searchInvalid = false;
     
     this.service.search(this.assetLookup).subscribe(
@@ -60,75 +58,67 @@ export class AssetComponent implements OnInit {
         console.error("Error occured while trying to display list", errorContext)
       }
     );
-
     this.canCreateNewAsset = false
   }
 
 
+
   private buildForm(data: Asset | null) {
     this.formModel = new FormGroup({
-      
       id: new FormControl(data?.id),
       name: new FormControl(data?.name, Validators.required), //bind value from param object to control value
       assetTypeId: new FormControl(data?.assetType?.id),
-      
     })
   }
 
 
-  // p() {
-  //   console.log(this.formModel.value)
-  //   console.log(this.formModel.get('assetTypeId')?.value);  
-  //   console.log(this.formModel.get('assetTypeName')?.value);  
-  // }
-  
 
   createNewAsset() {
     this.buildForm(null)
     this.canCreateNewAsset = !this.canCreateNewAsset;
-    //this.listHidden = false
+    this.listHidden = false
   }
 
+
+
   submitNewAsset() {
-
     const asset = this.formModel?.value! 
-    if (asset.assetTypeId){
-      asset.assetType = {
-        id: asset.assetTypeId,
-       }
-    }
-    this.buildForm(asset)
+    //this.buildForm(asset)
 
-     
+    // if (asset.assetTypeId){
+    //   asset.assetType = {
+    //     id: asset.assetTypeId,
+    //    }
+    // }
+
     this.service.update(asset).subscribe(
-      (response) => {
+      (response: Asset[]) => {
         console.log("Asset created successfully.")
-        this.asset.push(response);
-        
-        //this.toggleList(); // ?
-        //this.toggleList(); 
+        //this.asset.push(response); this?
+        this.asset=response //or this?
       },
       (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
       }
     )
-
   }
+
+
 
   searchAssetById(id: string) {
     if (!id || id.trim().length === 0) {
       console.error("Invalid ID: ID is empty or contains only spaces.");
       this.asset = [];
       this.searchInvalid = true;
-      return; // Exit early if the ID is invalid
+      return; // exit early if the ID is invalid
     }
   }
 
-  updateAsset(asset: Asset) {
 
+
+  updateAsset(asset: Asset) {
     asset.editing = !asset.editing
     this.canCreateNewAsset = false
-
     this.buildForm(asset)
 
     this.service.get(asset.id).subscribe(
@@ -141,43 +131,60 @@ export class AssetComponent implements OnInit {
       }
     )
 
-    this.asset.forEach((a: any) => {
+    this.asset.forEach((a: any) => { //make all assets in list not editable
       a.editing = false;
     });
-    asset.editing = !asset.editing
+    asset.editing = !asset.editing //except for the last asset that was attempted to edit
   }
 
-  saveAsset(asset: Asset) {  //h
-    const name: string = this.formModel.get('name')?.value!
+
+
+  saveAsset() {  
+    const asset: Asset = this.formModel?.value!
+    console.log(asset.id, asset.name)
+    this.buildForm(asset);
 
     this.service.update(asset).subscribe(
-      (response) => {
+      (response: Asset[]) => {
+        //this.asset = response
+        //this.asset.push(response);
         console.log("Asset Updated Successfully")
       },
       (errorContext) => {
         console.log("Error occured while trying to update an Asset", errorContext)
       });
 
-    asset.editing = false
+    this.buildForm(asset);
+
+    //Fix this
+    this.toggleList();
+    this.toggleList();
+    this.toggleList();
+    this.toggleList();
     this.toggleList();
     this.toggleList();
   }
+
+
 
   cancelUpdateAsset(asset: Asset) {
     asset.editing = false;
   }
 
+
+
   deleteAsset(id: string) {
     this.asset = this.asset.filter(a => a.id !== id)
-
     this.service.delete(id).subscribe(
-      (Response) => {
-        console.log("Asset deleted successfully")
+      (response) => {
+        console.log("Asset deleted successfully", response)
       },
       (errorContext) => {
         console.log("Error occured while trying to delete Asset", errorContext)
       })
   }
+
+
 
   searchAssetDynamically() {
 
@@ -194,6 +201,8 @@ export class AssetComponent implements OnInit {
       }
     )
   }
+
+
 
 
 }

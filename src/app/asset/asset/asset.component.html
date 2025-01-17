@@ -107,15 +107,15 @@
             <b> CREATED AT: </b> {{asset.createdAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
             <b> UPDATED AT: </b> {{asset.updatedAt | date:"MMM dd, yyyy 'at' hh:mm a"}} <br>
             <b> ASSET TYPE: </b>
-
-            <select>
-              <option  [value]="assetType.id" *ngFor="let assetType of assetType" >
+            <select formControlName="assetTypeId">
+              <option [value]="assetType.id" *ngFor="let assetType of assetType" >
                 {{assetType.name}} <!--display assetType.name instead-->
               </option>
             </select> <br>
 
+
             <div>
-              <button [disabled]="formModel.invalid" style="margin: 5px;" (click)="saveAsset(asset)">
+              <button [disabled]="formModel.invalid" style="margin: 5px;" (click)="saveAsset()">
                 Save </button>
               <button style="margin: 5px;" (click)="deleteAsset(asset.id)"> Delete </button>
               <button style="margin: 5px;" (click)="cancelUpdateAsset(asset)"> Cancel </button>
