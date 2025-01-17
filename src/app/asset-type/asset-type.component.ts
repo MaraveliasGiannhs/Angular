@@ -1,6 +1,6 @@
 import { AssetType } from './../Models/asset-type';
 import { AssetTypeService } from './../Services/asset-type.service';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -30,7 +30,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               editing: boolean = false;
               searchInvalid: boolean = false;
 
-     
+
+
+              
 
               toggleList() {
                 this.searchInvalid = false;
