@@ -10,7 +10,7 @@
   
   <!---------------------VIEW LIST-------------------->
   <div>
-    <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Assets </button> <br>
+    <button class="button" style="margin: 5px;" (click)="initList()"> View All Assets </button> <br>
   </div>
 
 
@@ -77,7 +77,7 @@
 
         <li *ngFor="let asset of asset">
 
-          <div *ngIf="!asset.editing">
+          <div *ngIf="formModel == null || asset.id != formModel.get('id')?.value">
 
             <b>ID:</b> {{asset.id}} <br>
             <b>NAME:</b> {{asset.name}} <br>
@@ -95,7 +95,7 @@
 
 
           <!------------EDITING------------>
-          <div *ngIf="asset.editing">
+          <div [formGroup]="formModel" *ngIf="formModel != null && asset.id == formModel.get('id')?.value">
 
             <b>ID:</b> {{asset.id}} <br>
             <b>NAME:</b> <input formControlName="name" type="text" /> <br>
@@ -118,7 +118,7 @@
               <button [disabled]="formModel.invalid" style="margin: 5px;" (click)="saveAsset()">
                 Save </button>
               <button style="margin: 5px;" (click)="deleteAsset(asset.id)"> Delete </button>
-              <button style="margin: 5px;" (click)="cancelUpdateAsset(asset)"> Cancel </button>
+              <button style="margin: 5px;" (click)="cancelUpdateAsset()"> Cancel </button>
             </div>
 
           </div>
@@ -128,5 +128,5 @@
       </div>
     </ul>
   </div>
-
-</div>
+ 
+ </div>

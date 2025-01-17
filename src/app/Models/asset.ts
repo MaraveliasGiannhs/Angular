@@ -6,6 +6,4 @@ export interface Asset {
   createdAt: string;
   updatedAt: string
   assetType: AssetType;
-  
-  editing: boolean;
- }
+  }

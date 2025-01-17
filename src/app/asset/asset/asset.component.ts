@@ -1,5 +1,5 @@
 import { AssetType } from './../../Models/asset-type';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Asset } from '../../Models/asset';
 import { AssetService } from '../../Services/asset.service';
 
@@ -20,7 +20,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class AssetComponent implements OnInit {
 
-  constructor(private service: AssetService, private assetTypeService: AssetTypeService,  private cdRef: ChangeDetectorRef) { }
+  constructor(private service: AssetService, private assetTypeService: AssetTypeService) { }
 
   assetType: AssetType[] = []
   assetLookup: AssetLookup = { id: undefined, like: ''}
@@ -30,10 +30,9 @@ export class AssetComponent implements OnInit {
   listHidden: boolean = false
   searchTerm: string = ''
   searchInvalid: boolean = false
-  editing: boolean = false
-
   formModel: FormGroup<any>  = new FormGroup({})
 
+ 
   ngOnInit(): void {
     this.assetTypeService.getAll().subscribe(
       (data: AssetType[]) => {
@@ -46,9 +45,7 @@ export class AssetComponent implements OnInit {
 
 
 
-  toggleList() {    
-    this.searchInvalid = false;
-    
+  initList() {    
     this.service.search(this.assetLookup).subscribe(
       (data: Asset[]) => {
         this.asset = data;
@@ -58,7 +55,6 @@ export class AssetComponent implements OnInit {
         console.error("Error occured while trying to display list", errorContext)
       }
     );
-    this.canCreateNewAsset = false
   }
 
 
@@ -83,19 +79,12 @@ export class AssetComponent implements OnInit {
 
   submitNewAsset() {
     const asset = this.formModel?.value! 
-    //this.buildForm(asset)
-
-    // if (asset.assetTypeId){
-    //   asset.assetType = {
-    //     id: asset.assetTypeId,
-    //    }
-    // }
 
     this.service.update(asset).subscribe(
-      (response: Asset[]) => {
+      (response: Asset) => {
         console.log("Asset created successfully.")
-        //this.asset.push(response); this?
-        this.asset=response //or this?
+        this.asset.push(response) //this?
+        //this.asset=response //or this?
       },
       (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
@@ -117,14 +106,13 @@ export class AssetComponent implements OnInit {
 
 
   updateAsset(asset: Asset) {
-    asset.editing = !asset.editing
     this.canCreateNewAsset = false
     this.buildForm(asset)
 
     this.service.get(asset.id).subscribe(
       (data: Asset[]) => {
         console.log("Updating Asset ...", data)
-        this.buildForm(asset)
+        //this.buildForm(asset)
       },
       (errorContext: any) => {
         console.log("Error occured while trying to fetch Asset for update", errorContext)
@@ -132,9 +120,9 @@ export class AssetComponent implements OnInit {
     )
 
     this.asset.forEach((a: any) => { //make all assets in list not editable
-      a.editing = false;
+      a.buildForm(null);
     });
-    asset.editing = !asset.editing //except for the last asset that was attempted to edit
+    this.buildForm(asset)  //except for the last asset that was attempted to edit
   }
 
 
@@ -145,30 +133,32 @@ export class AssetComponent implements OnInit {
     this.buildForm(asset);
 
     this.service.update(asset).subscribe(
-      (response: Asset[]) => {
+      (response: Asset) => {
         //this.asset = response
         //this.asset.push(response);
         console.log("Asset Updated Successfully")
+        this.buildForm(null);
+        this.initList();
       },
       (errorContext) => {
         console.log("Error occured while trying to update an Asset", errorContext)
       });
 
-    this.buildForm(asset);
+    //this.buildForm(asset);
 
     //Fix this
-    this.toggleList();
-    this.toggleList();
-    this.toggleList();
-    this.toggleList();
-    this.toggleList();
-    this.toggleList();
+    // this.toggleList();
+    // this.toggleList();
+    // this.toggleList();
+    // this.toggleList();
+    // this.toggleList();
+    // this.toggleList();
   }
 
 
 
-  cancelUpdateAsset(asset: Asset) {
-    asset.editing = false;
+  cancelUpdateAsset() {
+    this.buildForm(null)
   }
 
 
