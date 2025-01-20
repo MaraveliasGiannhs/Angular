@@ -10,20 +10,16 @@ import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
 export class AssetTypeService {
 
   constructor(private http: HttpClient) { }
-
-
   private url = "http://localhost:5178/api/assetTypes" //backend url
 
 
-  getAll(): Observable<AssetType[]> {
-    return this.http.get<AssetType[]>(this.url)
-  }
+
 
   get(id: string): Observable<AssetType> {
     return this.http.get<AssetType>(`${this.url}/${id}`)
   }
 
-  update(asset: AssetType): Observable<AssetType> {
+  update(asset: AssetType): Observable<AssetType> { //+create
     return this.http.post<AssetType>(this.url, asset) //{put here model's fields to pass to backend}
   }
 
@@ -31,17 +27,10 @@ export class AssetTypeService {
     return this.http.delete<void>(`${this.url}/${id}`)
   }
 
-  search(lookup: AssetTypeLookup): Observable<AssetType[]> {
+  search(lookup: AssetTypeLookup): Observable<AssetType[]> {          //+getAll
     return this.http.post<AssetType[]>(`${this.url}/search`, lookup)
   }
 
-  // for Content-type / Authorization settings
-  //
-  // private getHttpOptions() {
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json', // Setting content-type as application/json
-  //     // Example: 'Authorization': 'Bearer <your-token>'
-  //   });
-  //   return { headers };
-  // }
+
+
 }

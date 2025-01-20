@@ -34,9 +34,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
               
 
-              toggleList() {
-                this.searchInvalid = false;
-                this.service.getAll().subscribe(
+              initList() {
+                this.service.search(this.assetTypelookup).subscribe(
                   (data: AssetType[]) => {
                     this.assetType = data;
                     this.listHidden = !this.listHidden;
@@ -51,7 +50,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
               private buildForm(data: AssetType | null) {
                 this.formModel = new FormGroup({
-                  id: new FormControl(data?.id, /*Validators.required ?? cant create with null id*/),
+                  id: new FormControl(data?.id),
                   name: new FormControl(data?.name, Validators.required)
                 })
               }
@@ -61,6 +60,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               createNewAssetType() {
                 this.buildForm(null);
                 this.canCreateNewAssetType = !this.canCreateNewAssetType
+                this.listHidden = false
               }
 
 
@@ -96,16 +96,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 
-              updateAssetType(asset: AssetType) {
+              updateAssetType(assetType: AssetType) {
                 this.canCreateNewAssetType = false
-                this.service.get(asset.id).subscribe( //fetch asset type to display
+                this.buildForm(assetType)
+                this.service.get(assetType.id).subscribe( //fetch asset type to display
                   (data: AssetType) => {
-                    this.buildForm(data)
+                    //this.buildForm(data)
                   },
                   (errorContext) => {
                     console.log("Error occured while trying to fetch Asset Type for update.", errorContext)
                   }
                 )
+                this.buildForm(assetType)  
               }
 
 
@@ -117,17 +119,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
               saveAssetType() {
-                const asset: AssetType = this.formModel?.value!
-                this.service.update(asset).subscribe(
+                const assetType: AssetType = this.formModel?.value!
+                this.buildForm(assetType)
+
+                this.service.update(assetType).subscribe(
                   (response: AssetType) => {
                     console.log("Asset Type Updated Successfully")
+                    this.buildForm(null);
+                    this.initList();
                   },
                   (errorContext) => {
                     console.log("Error occured while trying to update an Asset Type", errorContext)
                   });
-                this.buildForm(null);
-                this.toggleList();
-                this.toggleList();
+                
+                //this.initList();
               }
 
 

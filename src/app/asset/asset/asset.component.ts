@@ -34,7 +34,7 @@ export class AssetComponent implements OnInit {
 
  
   ngOnInit(): void {
-    this.assetTypeService.getAll().subscribe(
+    this.assetTypeService.search(this.assetLookup).subscribe(
       (data: AssetType[]) => {
         this.assetType = data;
       },
@@ -94,17 +94,6 @@ export class AssetComponent implements OnInit {
 
 
 
-  searchAssetById(id: string) {
-    if (!id || id.trim().length === 0) {
-      console.error("Invalid ID: ID is empty or contains only spaces.");
-      this.asset = [];
-      this.searchInvalid = true;
-      return; // exit early if the ID is invalid
-    }
-  }
-
-
-
   updateAsset(asset: Asset) {
     this.canCreateNewAsset = false
     this.buildForm(asset)
@@ -119,10 +108,7 @@ export class AssetComponent implements OnInit {
       }
     )
 
-    this.asset.forEach((a: any) => { //make all assets in list not editable
-      a.buildForm(null);
-    });
-    this.buildForm(asset)  //except for the last asset that was attempted to edit
+    this.buildForm(asset)  
   }
 
 

@@ -2,7 +2,6 @@ import { Asset } from './../Models/asset';
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs'
-import { AssetType } from '../Models/asset-type';
 import { AssetLookup } from '../lookup-classes/asset-lookup';
 
 @Injectable({
@@ -11,31 +10,27 @@ import { AssetLookup } from '../lookup-classes/asset-lookup';
 export class AssetService {
 
   constructor(private http : HttpClient) { }
-
   private url = "http://localhost:5178/api/assets" //backend url
 
 
-  // getAll(): Observable<Asset[]>{              //combined with search method in API
-  //   return this.http.get<Asset[]>(this.url)
-  // }
 
   get(id : string): Observable<Asset[]>{
     return this.http.get<Asset[]>(`${this.url}/${id}`) 
   }
 
-  // create(name: string, assetTypeId:string): Observable<Asset>{  //combined with update(post) method in API
-  //   return this.http.post<Asset>(this.url, {name, assetTypeId})
-  // }
-
-  update(asset : Asset):Observable<Asset>{
-    return this.http.post<Asset>(this.url,asset) //{put here model's fields to pass to backend}
+  update(asset : Asset):Observable<Asset>{ //post/put
+    return this.http.post<Asset>(this.url,asset) 
   }
 
   delete(id: string): Observable<void>{
     return this.http.delete<void>(`${this.url}/${id}`)
   }
   
-  search(lookup : AssetLookup): Observable<Asset[]>{
+  search(lookup : AssetLookup): Observable<Asset[]>{ //+getAll
     return this.http.post<Asset[]>(`${this.url}/search`, lookup)
   }
+
+
+  
+
 }

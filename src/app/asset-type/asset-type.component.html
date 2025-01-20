@@ -17,7 +17,7 @@
 
   <!---------------------VIEW LIST-------------------->
   <div>
-    <button class="button" style="margin: 5px;" (click)="toggleList()"> View All Asset Types </button> <br>
+    <button class="button" style="margin: 5px;" (click)="initList()"> View All Asset Types </button> <br>
   </div>
 
 
@@ -68,7 +68,7 @@
     <!--------------------DISPLAY-------------------->
     <ul style="display: inline-block; text-align: left;">
 
-      <div>
+      <div [formGroup]="formModel">
 
         <li *ngFor="let assetType of assetType">
 
@@ -87,7 +87,7 @@
 
           
           <!------------EDITING------------>
-          <div [formGroup]="formModel" *ngIf="formModel != null && assetType.id == formModel.get('id')?.value">
+          <div *ngIf="formModel != null && assetType.id == formModel.get('id')?.value">
 
             <b>ID:</b> {{assetType.id}} <br>
             <b>NAME:</b> <input type="text" formControlName="name">
