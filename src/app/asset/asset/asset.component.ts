@@ -27,7 +27,7 @@ export class AssetComponent implements OnInit {
 
   asset: Asset[] = []
   canCreateNewAsset: boolean = false
-  listHidden: boolean = false
+  listHidden: boolean = true
   searchTerm: string = ''
   searchInvalid: boolean = false
   formModel: FormGroup<any>  = new FormGroup({})
@@ -72,7 +72,7 @@ export class AssetComponent implements OnInit {
   createNewAsset() {
     this.buildForm(null)
     this.canCreateNewAsset = !this.canCreateNewAsset;
-    this.listHidden = false
+    //this.listHidden = false
   }
 
 
@@ -85,6 +85,8 @@ export class AssetComponent implements OnInit {
         console.log("Asset created successfully.")
         this.asset.push(response) //this?
         //this.asset=response //or this?
+        this.initList()
+        this.initList()
       },
       (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
