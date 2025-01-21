@@ -25,7 +25,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
               formModel: FormGroup<any> = new FormGroup({});
 
-              listHidden: boolean = false;
+              listHidden: boolean = true;
               canCreateNewAssetType: boolean = false;
               editing: boolean = false;
               searchInvalid: boolean = false;
@@ -74,6 +74,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                   (response) => {                                      // response is returned by the service and then can be used
                     console.log("Asset Type Created Successfully")
                     this.assetType.push(response);
+                    this.initList()
+                    this.initList()
+
                   },
                   (errorContext) => {
                     console.log("Error occured while trying to create a new Asset Type", errorContext)
