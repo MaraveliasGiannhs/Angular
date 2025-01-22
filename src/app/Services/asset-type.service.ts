@@ -31,6 +31,9 @@ export class AssetTypeService {
     return this.http.post<AssetType[]>(`${this.url}/search`, lookup)
   }
 
+  getElementSum(): Observable<number> {
+    return this.http.get<number>(this.url);
+  }
 
 
 }
