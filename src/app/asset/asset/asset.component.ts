@@ -6,7 +6,6 @@ import { AssetService } from '../../Services/asset.service';
 import { AssetTypeService } from '../../Services/asset-type.service';
 import { AssetLookup } from '../../lookup-classes/asset-lookup';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
 
 
 
@@ -32,9 +31,11 @@ export class AssetComponent implements OnInit {
   searchInvalid: boolean = false
   formModel: FormGroup<any>  = new FormGroup({})
 
+  maxPages: number | undefined
+
  
   ngOnInit(): void {
-    this.assetTypeService.search(this.assetLookup).subscribe(
+    this.service.search(this.assetLookup).subscribe(
       (data: AssetType[]) => {
         this.assetType = data;
       },
