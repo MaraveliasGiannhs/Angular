@@ -1,6 +1,6 @@
 import { AssetType } from './../Models/asset-type';
 import { AssetTypeService } from './../Services/asset-type.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, numberAttribute, OnInit } from '@angular/core';
 import { AssetTypeLookup } from '../lookup-classes/asset-type-lookup';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -16,11 +16,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 
-            export class AssetTypeComponent  {
+            export class AssetTypeComponent implements OnInit  {
 
               constructor(private service: AssetTypeService) { }
               searchTerm: string = '';
-              assetTypelookup: AssetTypeLookup = { id: undefined, like: '' }
+              assetTypelookup: AssetTypeLookup = {pageIndex: 1, itemsPerPage : 4 }
               assetType: AssetType[] = [];
 
               formModel: FormGroup<any> = new FormGroup({});
@@ -30,21 +30,67 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               editing: boolean = false;
               searchInvalid: boolean = false;
 
+              pagesSum: number = 0
 
-
-              
-
-              initList() {
+              ngOnInit(): void {
+                //console.log("items per page:", this.assetTypelookup.pageIndex)
+                //console.log("page index :", this.assetTypelookup.itemsPerPage)
                 this.service.search(this.assetTypelookup).subscribe(
                   (data: AssetType[]) => {
                     this.assetType = data;
-                    this.listHidden = !this.listHidden;
+                    this.getElementSum()
                   },
                   (errorContext) => {
                     console.error("Error occured while trying to display list", errorContext)
                   }
                 );
               }
+              
+
+
+
+              initList() {
+                this.listHidden = !this.listHidden;
+              }
+
+
+
+
+              selectPage(selectedPage : number){
+                this.assetTypelookup.pageIndex = selectedPage
+                this.ngOnInit()
+              }
+
+              pageBack(){
+                if(this.assetTypelookup.pageIndex > 0)
+                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex-1  ;
+                this.ngOnInit()
+              }
+
+              pageNext(){
+                if(this.assetTypelookup.pageIndex < this.pagesSum)
+                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex+1;
+                this.ngOnInit()
+              }
+
+
+
+              getElementSum(){
+                this.service.getElementSum().subscribe(
+                  (data: number) => {
+
+                    this.pagesSum = data / this.assetTypelookup.itemsPerPage;
+                    if(this.pagesSum % 1 != 0)
+                      this.pagesSum = Math.ceil(this.pagesSum) //total pages
+                    
+                  },
+                  (errorContext) => {
+                    console.error("Error occured while trying to display list", errorContext)
+                  }
+                );
+              }
+
+
 
 
 
