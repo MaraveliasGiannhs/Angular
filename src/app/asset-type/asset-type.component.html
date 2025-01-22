@@ -111,4 +111,24 @@
     </ul>
   </div>
 
+
+  
+  
+ 
+
 </div>
+
+
+<div class="pagination-container" *ngIf="!listHidden" >
+
+  <button (click)="pageBack()" class="pagination"> &laquo; Back</button> 
+
+  <div *ngFor="let page of [].constructor(pagesSum) ; let i = index"> 
+    <button  class="pagination" (click)="selectPage(i+1)"> {{i+1}} </button>
+  </div>
+
+  <button (click)="pageNext()" class="pagination"> &raquo; Next</button>
+
+ </div> 
+
+ 
