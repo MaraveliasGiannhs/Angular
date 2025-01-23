@@ -132,16 +132,7 @@ export class AssetComponent implements OnInit {
       (errorContext) => {
         console.log("Error occured while trying to update an Asset", errorContext)
       });
-
     //this.buildForm(asset);
-
-    //Fix this
-    // this.toggleList();
-    // this.toggleList();
-    // this.toggleList();
-    // this.toggleList();
-    // this.toggleList();
-    // this.toggleList();
   }
 
 
