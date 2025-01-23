@@ -50,14 +50,39 @@
 
 
 
-    <!---------------------SEARCH BY ID-------------------->
-    <div>
+     <div>
       <br>
+      <!---------------------SEARCH BY ID-------------------->
       <input type="text" [(ngModel)]="assetTypelookup.id" placeholder="Search Id " class="search-input"
         (input)="searchAssetTypeDynamically()"> <br><br>
+
+      <!---------------------SEARCH BY NAME-------------------->
       <input type="text" [(ngModel)]="assetTypelookup.like" placeholder="Search Name" class="search-input"
-        (input)="searchAssetTypeDynamically()">
+        (input)="searchAssetTypeDynamically()"> 
       <br><br>
+
+      <!---------------------ORDER BY-------------------->
+      Order:
+        <select (change)="setOrderItem($event)">
+          <option  *ngFor="let name of controlNames">
+            {{name | titlecase}}
+          </option>
+        </select>
+
+      By:
+        <select (change)="setOrderBy($event)">
+          <option [value]="true">
+            Ascending
+          </option>
+          <option [value]="false">
+            Descending
+          </option>
+        </select>
+
+        
+        
+
+      <br>
     </div>
 
     <div *ngIf="searchInvalid" style="color: red;">
