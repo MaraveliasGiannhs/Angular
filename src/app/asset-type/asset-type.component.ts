@@ -19,8 +19,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
             export class AssetTypeComponent implements OnInit  {
 
               constructor(private service: AssetTypeService) { }
+
               searchTerm: string = '';
-              assetTypelookup: AssetTypeLookup = {pageIndex: 1, itemsPerPage : 4 }
+              assetTypelookup: AssetTypeLookup = {pageIndex: 1, itemsPerPage : 4, ascendingOrder:true, orderItem:"Id" }
               assetType: AssetType[] = [];
 
               formModel: FormGroup<any> = new FormGroup({});
@@ -31,10 +32,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
               searchInvalid: boolean = false;
 
               pagesSum: number = 0
+              controlNames:any
 
               ngOnInit(): void {
-                //console.log("items per page:", this.assetTypelookup.pageIndex)
-                //console.log("page index :", this.assetTypelookup.itemsPerPage)
                 this.service.search(this.assetTypelookup).subscribe(
                   (data: AssetType[]) => {
                     this.assetType = data;
@@ -44,14 +44,29 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                     console.error("Error occured while trying to display list", errorContext)
                   }
                 );
+                
+                this.buildForm(null) //initialize otherwise the getter returns nothing
+                this.controlNames = this.getFormControlNames
               }
-              
-
-
 
               initList() {
                 this.listHidden = !this.listHidden;
               }
+
+
+
+              setOrderItem(event: any){
+                console.log("Order list by :", event.target.value);
+                this.assetTypelookup.orderItem = event.target.value
+                this.ngOnInit()
+              }
+
+              setOrderBy(event: any){
+                console.log("Ascending :", event.target.value);
+                this.assetTypelookup.ascendingOrder = event.target.value
+                this.ngOnInit()
+              }
+
 
 
 
@@ -60,16 +75,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 this.assetTypelookup.pageIndex = selectedPage
                 this.ngOnInit()
               }
-
               pageBack(){
-                if(this.assetTypelookup.pageIndex > 0)
-                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex-1  ;
+                if(this.assetTypelookup.pageIndex > 1)
+                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex-1
                 this.ngOnInit()
               }
-
               pageNext(){
                 if(this.assetTypelookup.pageIndex < this.pagesSum)
-                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex+1;
+                  this.assetTypelookup.pageIndex = this.assetTypelookup.pageIndex+1
                 this.ngOnInit()
               }
 
@@ -90,6 +103,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                 );
               }
 
+
+
+
+              get getFormControlNames(){
+                return Object.keys(this.formModel.controls);  
+              }
 
 
 
@@ -120,8 +139,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
                   (response) => {                                      // response is returned by the service and then can be used
                     console.log("Asset Type Created Successfully")
                     this.assetType.push(response);
-                    this.initList()
-                    this.initList()
+                    this.ngOnInit()
 
                   },
                   (errorContext) => {
@@ -136,6 +154,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
                 this.service.delete(id).subscribe(
                   (response) => {
+                    this.ngOnInit()
                     console.log("Asset Type Deleted Successfully", response)
                   },
                   (errorContext) => {
