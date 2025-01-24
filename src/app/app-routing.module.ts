@@ -7,7 +7,7 @@ import { AssetComponent } from './asset/asset/asset.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { BranchComponent } from './branch/branch.component';
 import { CompanyComponent } from './company/company.component';
-import { TestComponent } from './test/test.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 const routes: Routes = [
@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'employee', component: EmployeeComponent},
   { path: 'branch', component: BranchComponent},
   { path: 'company', component: CompanyComponent},
-  { path: 'test', component: TestComponent},
+  { path: 'pagination', component: PaginationComponent},
 
 ];
 
