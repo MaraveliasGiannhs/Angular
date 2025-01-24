@@ -29,7 +29,10 @@ export class AssetService {
   search(lookup : AssetLookup): Observable<Asset[]>{ //+getAll
     return this.http.post<Asset[]>(`${this.url}/search`, lookup)
   }
-
+  
+  getElementSum(): Observable<number> {
+    return this.http.get<number>(this.url);
+  }
 
   
 
