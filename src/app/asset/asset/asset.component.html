@@ -53,19 +53,43 @@
 
 
 
-    <!---------------------SEARCH BY ID/NAME-------------------->
     <div>
       <br>
+      <!---------------------SEARCH BY ID-------------------->
       <input type="text" [(ngModel)]="assetLookup.id" placeholder="Search Id " class="search-input"
-        (input)="searchAssetDynamically()"> <br><br>
+        (input)="searchAssetDynamically()"> <br><br> 
+
+      <!---------------------SEARCH BY NAME-------------------->
       <input type="text" [(ngModel)]="assetLookup.like" placeholder="Search Name" class="search-input"
         (input)="searchAssetDynamically()">
       <br><br>
-    </div>
 
-    <div *ngIf="searchInvalid" style="color: red;">
-      Asset Type not found in the list.
+      <!---------------------SORT-------------------->
+      Order: 
+      <select (change)="setOrderItem($event)">
+        <option  *ngFor="let name of controlNames">
+          {{name | titlecase}}
+        </option>
+      </select>
+  
+      By:      
+      <select (change)="setOrderBy($event)">
+        <option [value]="true">
+          Ascending
+        </option>
+        <option [value]="false">
+          Descending
+        </option>
+      </select>
+  
+  
     </div>
+  
+      <div *ngIf="searchInvalid" style="color: red;">
+        Asset Type not found in the list.
+      </div>
+
+ 
 
 
 
@@ -128,9 +152,18 @@
       </div>
     </ul>
   </div>
+ </div>
 
-  <div *ngIf="!listHidden">
-    [Add Page Navigation Here Below List]
+
+ <!-- make pagination a component and import it with @Input() -->
+ <div class="pagination-container" *ngIf="!listHidden" >
+
+  <button (click)="pageBack()" class="pagination"> &laquo; Back</button> 
+
+  <div *ngFor="let page of [].constructor(pagesSum) ; let i = index"> 
+    <button  class="pagination" (click)="selectPage(i+1)"> {{i+1}} </button>
   </div>
 
- </div>
+  <button (click)="pageNext()" class="pagination"> &raquo; Next</button>
+
+</div> 

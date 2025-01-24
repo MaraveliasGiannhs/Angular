@@ -1,11 +1,12 @@
 import { AssetType } from './../../Models/asset-type';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Asset } from '../../Models/asset';
 import { AssetService } from '../../Services/asset.service';
 
 import { AssetTypeService } from '../../Services/asset-type.service';
 import { AssetLookup } from '../../lookup-classes/asset-lookup';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AssetTypeLookup } from '../../lookup-classes/asset-type-lookup';
 
 
 
@@ -22,40 +23,66 @@ export class AssetComponent implements OnInit {
   constructor(private service: AssetService, private assetTypeService: AssetTypeService) { }
 
   assetType: AssetType[] = []
-  assetLookup: AssetLookup = { id: undefined, like: ''}
+  assetLookup: AssetLookup = { id: undefined, like: '', pageIndex: 1, orderItem: "Id", itemsPerPage: 4, ascendingOrder: true }
+  assetTypelookup: AssetTypeLookup = { pageIndex: 1, itemsPerPage: 10, ascendingOrder: true, orderItem: "Name" }
 
   asset: Asset[] = []
   canCreateNewAsset: boolean = false
   listHidden: boolean = true
   searchTerm: string = ''
   searchInvalid: boolean = false
-  formModel: FormGroup<any>  = new FormGroup({})
+  formModel: FormGroup<any> = new FormGroup({})
+  pagesSum: number = 0
+  controlNames: any
 
-  maxPages: number | undefined
 
- 
+
   ngOnInit(): void {
-    this.service.search(this.assetLookup).subscribe(
+
+    this.assetTypeService.search(this.assetTypelookup).subscribe(
       (data: AssetType[]) => {
         this.assetType = data;
       },
       (errorContext) => {
         console.log("Error occured while trying to fetch Asset Types", errorContext);
       })
-  }
 
-
-
-  initList() {    
     this.service.search(this.assetLookup).subscribe(
       (data: Asset[]) => {
         this.asset = data;
-        this.listHidden = !this.listHidden;
+        this.getElementSum()
       },
       (errorContext) => {
         console.error("Error occured while trying to display list", errorContext)
       }
     );
+    this.buildForm(null)
+    this.controlNames = this.getFormControlNames
+  }
+
+
+
+  initList() {
+    this.listHidden = !this.listHidden
+  }
+
+
+
+  //sorting
+  setOrderItem(event: any) {
+    console.log("Order list by :", event.target.value);
+    this.assetLookup.orderItem = event.target.value
+    this.ngOnInit()
+  }
+
+  setOrderBy(event: any) {
+    console.log("Ascending :", event.target.value);
+    this.assetLookup.ascendingOrder = event.target.value
+    this.ngOnInit()
+  }
+
+  get getFormControlNames() {
+    return Object.keys(this.formModel.controls);
   }
 
 
@@ -70,24 +97,36 @@ export class AssetComponent implements OnInit {
 
 
 
+  getElementSum() {
+    this.service.getElementSum().subscribe(
+      (data: number) => {
+        this.pagesSum = data / this.assetLookup.itemsPerPage;
+        if (this.pagesSum % 1 != 0)
+          this.pagesSum = Math.ceil(this.pagesSum) //total pages
+      },
+      (errorContext) => {
+        console.error("Error occured while trying to display list", errorContext)
+      }
+    );
+  }
+
+
+
   createNewAsset() {
     this.buildForm(null)
     this.canCreateNewAsset = !this.canCreateNewAsset;
-    //this.listHidden = false
   }
 
 
 
   submitNewAsset() {
-    const asset = this.formModel?.value! 
+    const asset = this.formModel?.value!
 
     this.service.update(asset).subscribe(
       (response: Asset) => {
         console.log("Asset created successfully.")
-        this.asset.push(response) //this?
-        //this.asset=response //or this?
-        this.initList()
-        this.initList()
+        this.asset.push(response)
+        this.ngOnInit()
       },
       (errorContext) => {
         console.log("Error occured while trying to create a new Asset", errorContext);
@@ -98,41 +137,22 @@ export class AssetComponent implements OnInit {
 
 
   updateAsset(asset: Asset) {
-    this.canCreateNewAsset = false
     this.buildForm(asset)
-
-    this.service.get(asset.id).subscribe(
-      (data: Asset[]) => {
-        console.log("Updating Asset ...", data)
-        //this.buildForm(asset)
-      },
-      (errorContext: any) => {
-        console.log("Error occured while trying to fetch Asset for update", errorContext)
-      }
-    )
-
-    this.buildForm(asset)  
   }
 
 
 
-  saveAsset() {  
+  saveAsset() {
     const asset: Asset = this.formModel?.value!
-    console.log(asset.id, asset.name)
-    this.buildForm(asset);
-
     this.service.update(asset).subscribe(
       (response: Asset) => {
-        //this.asset = response
-        //this.asset.push(response);
-        console.log("Asset Updated Successfully")
+        console.log("Asset Updated Successfully:", response)
         this.buildForm(null);
-        this.initList();
+        this.ngOnInit()
       },
       (errorContext) => {
         console.log("Error occured while trying to update an Asset", errorContext)
       });
-    //this.buildForm(asset);
   }
 
 
@@ -147,11 +167,29 @@ export class AssetComponent implements OnInit {
     this.asset = this.asset.filter(a => a.id !== id)
     this.service.delete(id).subscribe(
       (response) => {
+        this.ngOnInit()
         console.log("Asset deleted successfully", response)
       },
       (errorContext) => {
         console.log("Error occured while trying to delete Asset", errorContext)
       })
+  }
+
+
+
+  selectPage(selectedPage: number) {
+    this.assetLookup.pageIndex = selectedPage
+    this.ngOnInit()
+  }
+  pageBack() {
+    if (this.assetLookup.pageIndex > 1)
+      this.assetLookup.pageIndex = this.assetLookup.pageIndex - 1
+    this.ngOnInit()
+  }
+  pageNext() {
+    if (this.assetLookup.pageIndex < this.pagesSum)
+      this.assetLookup.pageIndex = this.assetLookup.pageIndex + 1
+    this.ngOnInit()
   }
 
 
@@ -171,7 +209,6 @@ export class AssetComponent implements OnInit {
       }
     )
   }
-
 
 
 

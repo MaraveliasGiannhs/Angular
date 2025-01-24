@@ -28,3 +28,47 @@ div > .search-button {
   border: 1px solid #ccc;
   border-radius: 40px;
 }
+
+
+/* For Pagination Buttons */
+.pagination {
+  display: inline-block;
+  margin: 0 8px;
+  padding: 2px 26px;
+}
+
+.pagination button {
+  width: 80px; /* Adjust width as necessary */
+  height: 40px;
+  text-align: center;
+  font-size: larger;
+  border: 1px solid #000000;
+  margin: 0 5px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.pagination button.active {
+  background-color: #4caf50;
+  color: rgb(228, 12, 12);
+  border: 1px solid #4CAF50;
+}
+
+.pagination button:hover:not(.active) {
+  background-color: #ddd;
+}
+
+.pagination button:disabled {
+  background-color: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* End Pagination */
+
