@@ -6,13 +6,13 @@ import { AppComponent } from './app.component';
 import { HttpClientModule,  } from '@angular/common/http';
 import { AssetTypeComponent } from './asset-type/asset-type.component';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Router,RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AssetComponent } from './asset/asset/asset.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { BranchComponent } from './branch/branch.component';
- import { FormControl,FormsModule,FormGroup, ReactiveFormsModule } from '@angular/forms';
+ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyComponent } from './company/company.component';
-import { TestComponent } from './test/test.component';
+import { PaginationComponent } from './pagination/pagination.component';
  
 
 
@@ -25,7 +25,7 @@ import { TestComponent } from './test/test.component';
     AssetComponent,
     EmployeeComponent,
     BranchComponent,
-    TestComponent,
+    PaginationComponent,
 
     
     
