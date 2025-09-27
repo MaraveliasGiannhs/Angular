@@ -16,8 +16,8 @@ export class PaginationComponent implements OnInit {
 
   @Output() childEvent = new EventEmitter<number>(); //emit back the index once updated
 
-  @Input() childPagesSum: any //ok
-  @Input() childPageIndex: any //ok
+  @Input() childPagesSum: any
+  @Input() childPageIndex: any
 
 
 

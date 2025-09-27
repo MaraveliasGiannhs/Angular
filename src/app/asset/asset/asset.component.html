@@ -1,23 +1,25 @@
 <!----------------------BACK------------------------>
-<div class="button">
+<!-- <div class="button">
   <button routerLink='/'> Back </button>
-</div>
+</div> -->
+
+<!-- <div class="bg-blue-500 text-white font-bold p-6 rounded-lg shadow-lg hover:bg-blue-600 transition-all">
+    Hello, Tailwind!
+ </div> -->
 
 
+<div class="" style="text-align: center;">
 
-
-<div class="button" style="text-align: center;">
-  
   <!---------------------VIEW LIST-------------------->
-  <div>
+  <!-- <div>
     <button class="button" style="margin: 5px;" (click)="initList()"> View All Assets </button> <br>
-  </div>
+  </div> -->
 
 
   <!---------------------CREATE ASSET-------------------->
-  <div class="button2">
+  <!-- <div class="button2">
     <button style="margin: 5px;" (click)="createNewAsset()"> Create New </button>
-  </div>
+  </div> -->
 
   <div *ngIf="canCreateNewAsset">
 
@@ -34,12 +36,12 @@
       </select>
 
 
-      
+
       <div *ngIf="formModel.get('name')?.touched && formModel.get('name')?.invalid">
         <small style="color: red;">Name is required</small>
       </div>
-      
-      
+
+
 
       <button [disabled]="formModel.invalid" (click)="submitNewAsset()" style="margin: 5px;"> Submit </button>
 
@@ -57,7 +59,7 @@
       <br>
       <!---------------------SEARCH BY ID-------------------->
       <input type="text" [(ngModel)]="assetLookup.id" placeholder="Search Id " class="search-input"
-        (input)="searchAssetDynamically()"> <br><br> 
+        (input)="searchAssetDynamically()"> <br><br>
 
       <!---------------------SEARCH BY NAME-------------------->
       <input type="text" [(ngModel)]="assetLookup.like" placeholder="Search Name" class="search-input"
@@ -65,14 +67,14 @@
       <br><br>
 
       <!---------------------SORT-------------------->
-      Order: 
+      Order:
       <select (change)="setOrderItem($event)">
         <option  *ngFor="let name of controlNames">
           {{name | titlecase}}
         </option>
       </select>
-  
-      By:      
+
+      By:
       <select (change)="setOrderBy($event)">
         <option [value]="true">
           Ascending
@@ -81,15 +83,15 @@
           Descending
         </option>
       </select>
-  
-  
+
+
     </div>
-  
+
       <div *ngIf="searchInvalid" style="color: red;">
         Asset Type not found in the list.
       </div>
 
- 
+
 
 
 
@@ -156,14 +158,19 @@
 
 
  <!-- make pagination a component and import it with @Input() -->
- <div class="pagination-container" *ngIf="!listHidden" >
+<!-- <div class="pagination-container" *ngIf="!listHidden" >
 
-  <button (click)="pageBack()" class="pagination"> &laquo; Back</button> 
+  <button (click)="pageBack()" class="pagination"> &laquo; Back</button>
 
-  <div *ngFor="let page of [].constructor(pagesSum) ; let i = index"> 
+  <div *ngFor="let page of [].constructor(pagesSum) ; let i = index">
     <button  class="pagination" (click)="selectPage(i+1)"> {{i+1}} </button>
   </div>
 
   <button (click)="pageNext()" class="pagination"> &raquo; Next</button>
 
-</div> 
+
+</div> -->
+
+
+<aurora-component></aurora-component>
+

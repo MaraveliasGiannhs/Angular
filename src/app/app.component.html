@@ -1,20 +1,36 @@
-<div class="button">
+<!-- <h1 style="text-align: center; margin: 20px; font-size: 3rem;"> Welcome </h1> -->
 
-  <h1 style="text-align: center; margin: 20px; font-size: 3rem;"> Welcome </h1>
 
-  <div style="text-align: center;">
+<header class="fixed top-0 left-0 w-full flex items-center justify-center py-6 z-50">
+    <div class="">
+      <h1 class="text-5xl md:text-7xl font-serif font-light tracking-tight text-gray-900 dark:text-white leading-tight">
+        <span class="block">Aether</span>
+        <span class="block text-gray-500 dark:text-white text-xl tracking-widest mt-2">Luxury Meets Innovation</span>
+      </h1>
+    </div>
+  </header>
 
-    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset-type"> Asset Types </button>
+<div class="min-h-screen transition-colors duration-1000 bg-white dark:bg-black text-black dark:text-white">
 
-    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset"> Assets </button>
+  <div class="fixed top-4 right-4 z-50">
+      <button (click)="toggleTheme()" class="px-3 py-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded">
+          <app-cryptic-text>Toggle Theme</app-cryptic-text>
+      </button>
+  </div>
 
-    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/employee"> Employees </button>
+  <div class="">
 
-    <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/branch"> Branches </button> -->
+    <div style="text-align: center; ">
+      <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset-type"> Asset Types </button> -->
+      <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset"> Assets </button> -->
+      <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/employee"> Employees </button> -->
+      <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/branch"> Branches </button> -->
+      <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/company"> Companies </button> -->
+    </div>
 
-    <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/company"> Companies </button>
+    <router-outlet></router-outlet>
 
   </div>
-  <router-outlet></router-outlet>
-
 </div>
+
+

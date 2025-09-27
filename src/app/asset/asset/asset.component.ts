@@ -20,7 +20,10 @@ import { AssetTypeLookup } from '../../lookup-classes/asset-type-lookup';
 })
 export class AssetComponent implements OnInit {
 
-  constructor(private service: AssetService, private assetTypeService: AssetTypeService) { }
+  constructor(
+    private service: AssetService,
+    private assetTypeService: AssetTypeService,
+  ) { }
 
   assetType: AssetType[] = []
   assetLookup: AssetLookup = { id: undefined, like: '', pageIndex: 1, orderItem: "Id", itemsPerPage: 4, ascendingOrder: true }
@@ -59,8 +62,6 @@ export class AssetComponent implements OnInit {
     this.buildForm(null)
     this.controlNames = this.getFormControlNames
   }
-
-
 
   initList() {
     this.listHidden = !this.listHidden

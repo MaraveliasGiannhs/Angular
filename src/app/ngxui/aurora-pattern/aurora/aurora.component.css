@@ -1,0 +1,63 @@
+   .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      width: 100vw;
+      height: 450px;
+      background-color: black;
+
+      h1 {
+        font-size: 6rem;
+        font-weight: bold;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-image: linear-gradient(
+          to bottom,
+          #fff 0,
+          rgba(255, 0, 0, 0.1) 95%
+        );
+      }
+
+    }
+
+  .contentWhite {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      width: 100vw;
+      height: 450px;
+      background-color: white;
+
+      h1 {
+        font-size: 6rem;
+        font-weight: bold;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-image: linear-gradient(
+          to bottom,
+          #000000 0,
+          rgb(255, 0, 0) 95%
+        );
+      }
+
+
+
+
+
+    }
+
+    .fade-mask {
+       mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    }
+
+
+
+
+
+

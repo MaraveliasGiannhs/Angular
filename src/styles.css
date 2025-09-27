@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dark {
+  --dark: 36, 36, 36;
+}
+
+@keyframes slideRightFade {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+   }
+  100% {
+     opacity: 1;
+    }
+}
+
+@keyframes slideLeftFade {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+   }
+  100% {
+     opacity: 1;
+    }
+}
+
+.fade-right-overlay {
+  background: linear-gradient(to right, black 0%, transparent 100%);
+  animation: slideRightFade 6s forwards;
+}
+
+.fade-left-overlay {
+  background: linear-gradient(to left, black 0%, transparent 100%);
+  animation: slideLeftFade 6s forwards;
+}
+
+
+
