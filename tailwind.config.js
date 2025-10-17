@@ -1,7 +1,9 @@
+const flyonui = require("flyonui");
 
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
+    './node_modules/flyonui/dist/js/*.js',
   ],
   darkMode: 'class',
   theme: {
@@ -16,6 +18,10 @@ module.exports = {
       },
 
     },
-    plugins: [],
-  }
+  },
+  plugins: [
+      flyonui,
+      require('flyonui'),
+      require('flyonui/plugin')
+    ],
 }
