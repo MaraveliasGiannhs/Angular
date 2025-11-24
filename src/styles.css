@@ -105,8 +105,58 @@
 .dark .glass-btn::after {
   background: rgb(248, 248, 248);
 }
-
 /* GLASS BUTTON END */
+
+
+
+
+
+/* SCROLLBAR */
+/* Hide for Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+/* Hide for Firefox */
+html, body {
+  scrollbar-width: none;
+}
+
+
+
+
+
+/* SCROLL ANIMATION */
+img[scrollAnimate].visible {
+  transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+img[scrollAnimate] {
+  transform: translateX(-150px);
+  opacity: 0;
+}
+
+/* PARALLAX */
+img[scrollParallaxToLeft] {
+  transform: translateX(var(--move, 0));
+  opacity: var(--fade, 1);
+  transition: transform 0.1s linear, opacity 0.1s linear;
+}
+
+img[scrollParallaxToRight] {
+  transform: translateX(var(--move, 0));
+  opacity: var(--fade, 1);
+  transition: transform 0.1s linear, opacity 0.1s linear;
+}
+
+/* TODO: Stick on header when scrolling up */
+.sticky-img {
+  position: sticky;
+  top: 0; /* sticks to top */
+  z-index: 10; /* optional: stay above other content */
+}
 
 
 

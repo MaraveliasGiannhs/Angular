@@ -4,11 +4,14 @@
   import { AppComponent } from '../../../app.component';
   import { ThemeService } from '../../../Services/theme.service';
   import { CommonModule } from '@angular/common';
+  import { ScrollAnimateDirective } from "../../../scroll-animate.directive";
+  import { ScrollParallaxToLeftDirective } from "../../../scroll-parallax-to-left.directive";
+  import { ScrollParallaxToRightDirective } from "../../../scroll-parallax-to-right.directive";
 
     @Component({
       selector: 'aurora-component',
       standalone: true,
-      imports: [NgxAuroraComponent, CommonModule],
+      imports: [NgxAuroraComponent, CommonModule, ScrollParallaxToRightDirective, ScrollParallaxToLeftDirective],
       templateUrl: './aurora.component.html',
       styleUrl: './aurora.component.css',
       encapsulation: ViewEncapsulation.None //to apply global styles,

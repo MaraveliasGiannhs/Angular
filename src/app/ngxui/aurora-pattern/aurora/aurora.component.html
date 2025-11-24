@@ -1,13 +1,43 @@
-<div class="relative overflow-hidden h-[600px]">
-  <om-aurora>
+    <!-- <div class="spacer">
+      <img [src]="humanHandImage" class=" sticky-img  w-[700px] h-auto right-0" />
+        <div class="content">More content here...</div>
+    </div> -->
+<!-- <div class="">
+  <div class="spacer">Scroll down...</div>
 
-    <div class="relative -bottom-[200px] fade-right-overlay">
-        <img [src]="cyberArmImage" alt="hand" class="absolute h-96 w-auto -left-[120px]   " />
+  <img src="your-image.jpg" class="sticky-img " alt="Sticky Image">
+
+  <div class="content">More content here...</div>
+</div> -->
+
+
+<div class=" overflow-hidden h-[600px]">
+
+  <om-aurora>
+    <div class="sticky top-0 z-50">
+
+    <div class="relative -bottom-[200px] fade-right-overlay" >
+        <img [src]="cyberArmImage" alt="hand" class="  absolute h-96 w-auto -left-[120px]" scrollParallaxToLeft />
     </div>
 
     <div class="relative -bottom-[200px] fade-left-overlay">
-      <img [src]="humanHandImage" class="absolute w-[700px] h-auto right-0   "/>
+      <img [src]="humanHandImage" class=" absolute w-[700px] h-auto right-0" scrollParallaxToRight/>
     </div>
+    </div>
+
+
+
+
+
+
+<!--
+  <img
+  [src]="humanHandImage"
+  scrollParallax
+  class="w-64"
+/> -->
+
+
 
     <!-- <div [ngClass]="(isDark ? 'content' : 'contentWhite') + ' transition-colors duration-1000'">
         <h1 class="text-black dark:text-white relative -translate-y-36">
@@ -18,3 +48,8 @@
 
   </om-aurora>
 </div>
+
+
+
+
+

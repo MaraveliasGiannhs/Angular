@@ -17,6 +17,7 @@
       <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Products</span>
       </button>
+
       <button class=" font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">About Us</span>
       </button>
@@ -26,39 +27,27 @@
     <div>
       <h1 class="text-5xl md:text-7xl font-serif font-light tracking-tight text-gray-900 dark:text-white leading-tight text-center duration-1000">
         <span class="block">Aether</span>
-        <span class="block text-gray-500 dark:text-white text-xl tracking-widest mt-2">Luxury Meets Innovation</span>
+        <span class="block text-gray-500 dark:text-white text-xl tracking-widest mt-2">Beyond Nature, Within Reach</span>
       </h1>
     </div>
 
     <div class="text-lg absolute right-0 flex space-x-24 pr-32">
+
       <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Services</span>
       </button>
-
 
       <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Contact</span>
       </button>
 
+      <!-- Theme Toggle -->
+      <label class="swap swap-rotate">
+        <input type="checkbox" (change)="toggleTheme()" />
+        <span class="text-black dark:text-white swap-on icon-[tabler--sun] size-6"></span>
+        <span class="text-black dark:text-white swap-off icon-[tabler--moon] size-6"></span>
+      </label>
 
-      <button (click)="toggleTheme()" class="rounded-full
-       btn
-       btn-glass
-       bg-transparent
-       dark:text-white
-       text-black
-       hover:ring-black
-       dark:hover:ring-white
-       hover:bg-transparent
-       border-black
-       dark:border-white
-       ring-transparent
-       transition-all
-       focus:ring-0
-       hover:ring-0
-       duration-1000">
-       <span class="icon-[tabler--sun]"></span>
-      </button>
 
     </div>
 
@@ -67,7 +56,6 @@
 
 
 </header>
-
 
 
 
@@ -90,5 +78,8 @@
 
   </div>
 </div>
+
+
+
 
 
