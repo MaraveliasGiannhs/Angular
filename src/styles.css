@@ -43,3 +43,73 @@
 
 
 
+
+
+/* GLASS BUTTON */
+/* Base — Invisible until hovered */
+.glass-btn {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0);      /* invisible */
+  border: 1px solid rgba(255, 255, 255, 0); /* invisible */
+  color: #000000;
+  padding: 0.75rem 1.75rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all .35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover — Glass appears gently */
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: transparent;
+  box-shadow: 0 0 18px rgb(0, 0, 0);
+}
+
+/* Subtle click pulse */
+.glass-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.28);
+}
+
+/* Inner glow pulse on click */
+.glass-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.295);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.glass-btn:active::after {
+  opacity: 0.15;
+}
+
+/* DARK MODE  */
+.dark .glass-btn {
+  color: #ffffff; /* text becomes black */
+}
+
+/* Hover state in dark mode (border + bg appear) */
+.dark .glass-btn:hover {
+  border-color: rgba(216, 212, 212, 0);  /* black border */
+  background: rgba(2, 0, 0, 0.048);   /* subtle dark glass */
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.849);
+}
+
+/* Inner glow flash in dark mode */
+.dark .glass-btn::after {
+  background: rgb(248, 248, 248);
+}
+
+/* GLASS BUTTON END */
+
+
+
+
+
+

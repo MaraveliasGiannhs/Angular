@@ -14,52 +14,70 @@
   <div class="relative flex items-center justify-center w-full">
 
     <div class=" absolute left-0 flex space-x-24 pl-32 text-lg ">
-      <button class="font-mono relative h-12 overflow-hidden rounded bg-transparent px-5 py-2.5 text-black dark:text-white transition-all duration-300 hover:bg-transparent hover:ring-1 hover:ring-black dark:hover:ring-white">
+      <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Products</span>
       </button>
-      <button class=" font-mono relative h-12 overflow-hidden rounded bg-transparent px-5 py-2.5 text-black dark:text-white transition-all duration-300 hover:bg-transparent hover:ring-1 hover:ring-black dark:hover:ring-white">
+      <button class=" font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">About Us</span>
       </button>
     </div>
 
     <!-- Logo -->
     <div>
-      <h1 class="text-5xl md:text-7xl font-serif font-light tracking-tight text-gray-900 dark:text-white leading-tight text-center">
+      <h1 class="text-5xl md:text-7xl font-serif font-light tracking-tight text-gray-900 dark:text-white leading-tight text-center duration-1000">
         <span class="block">Aether</span>
         <span class="block text-gray-500 dark:text-white text-xl tracking-widest mt-2">Luxury Meets Innovation</span>
       </h1>
     </div>
 
     <div class="text-lg absolute right-0 flex space-x-24 pr-32">
-      <button class=" font-mono relative h-12 overflow-hidden rounded bg-transparent px-5 py-2.5 text-black dark:text-white transition-all duration-300 hover:bg-transparent hover:ring-1  hover:ring-black dark:hover:ring-white">
+      <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Services</span>
       </button>
-      <button class="font-mono relative h-12 overflow-hidden rounded bg-transparent px-5 py-2.5 text-black dark:text-white transition-all duration-300 hover:bg-transparent hover:ring-1 hover:ring-black dark:hover:ring-white">
+
+
+      <button class="font-mono fo-btn glass-btn relative overflow-hidden">
         <span class="relative">Contact</span>
+      </button>
+
+
+      <button (click)="toggleTheme()" class="rounded-full
+       btn
+       btn-glass
+       bg-transparent
+       dark:text-white
+       text-black
+       hover:ring-black
+       dark:hover:ring-white
+       hover:bg-transparent
+       border-black
+       dark:border-white
+       ring-transparent
+       transition-all
+       focus:ring-0
+       hover:ring-0
+       duration-1000">
+       <span class="icon-[tabler--sun]"></span>
       </button>
 
     </div>
 
 
   </div>
+
+
 </header>
 
-<div class="hs-tooltip" data-hs-tooltip-content="Hello!">
-  <button class="btn btn-primary">Hover me</button>
-</div>
 
 
 
 <div class="min-h-screen transition-colors duration-1000 bg-white dark:bg-black text-black dark:text-white">
 
-  <div class="fixed top-4 right-4 z-50">
-      <button (click)="toggleTheme()" class="px-3 py-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded">
-          <app-cryptic-text>Toggle Theme</app-cryptic-text>
-      </button>
-  </div>
+
 
   <div class="">
 
+    <!-- Router -->
     <div style="text-align: center; ">
       <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset-type"> Asset Types </button> -->
       <!-- <button style="margin: 50px;" *ngIf="router.url === '/'" type="button" routerLink="/asset"> Assets </button> -->

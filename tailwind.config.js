@@ -21,7 +21,5 @@ module.exports = {
   },
   plugins: [
       flyonui,
-      require('flyonui'),
-      require('flyonui/plugin')
     ],
 }
